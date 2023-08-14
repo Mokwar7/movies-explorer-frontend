@@ -1,0 +1,125 @@
+.header {
+    width: 100%;
+    height: 74px;
+    display: flex;
+    align-items: center;
+}
+
+.header__auth {
+    background-color: #DDDEE3;
+}
+
+.header__loginned {
+    background-color: #FAFAFA;
+}
+
+.header__container {
+    width: 1140px;
+    height: 38px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.header__logo {
+    background-image: url('../../images/logo.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 38px;
+    height: 38px;
+    display: flex;
+}
+
+.header__nav-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.header__nav {
+    margin-left: 44px;
+}
+
+.header__nav-text {
+    text-decoration: none;
+    margin-left: 16px;
+    color: #000;
+    transition: opacity 0.3s ease-in-out;
+    font-weight: 400;
+}
+
+.header__nav-text:hover {
+    opacity: 0.7;
+}
+
+.header__nav-text:first-of-type {
+    margin-left: 0;
+}
+
+.header__nav-text_active {
+    font-weight: 500;
+}
+
+.header__auth-container {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    font-size: 12px;
+    font-weight: 500;
+    align-items: center;
+}
+
+.header__signup {
+    text-decoration: none;
+    color: #000;
+    margin-right: 30px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.header__signup:hover {
+    opacity: 0.8;
+}
+
+.header__signin {
+    text-decoration: none;
+    color: #fff;
+    padding: 8px 20px;
+    background-color: #3456F3;
+    border-radius: 3px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.header__signin:hover {
+    opacity: 0.8;
+}
+
+.header__profile {
+    width: 100px;
+    height: 32px;
+    border-radius: 50px;
+    border: 2px solid rgba(171, 171, 171, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.header__profile:hover {
+    opacity: 0.8;
+}
+
+.header__profile-icon {
+    width: 12px;
+    height: 14px;
+}
+
+.header__profile-text {
+    font-weight: 500;
+    font-size: 14px;
+    margin-left: 7px;
+    color: #000;
+}
