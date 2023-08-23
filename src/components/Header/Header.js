@@ -1,45 +1,67 @@
 import '../../index.css';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import React from 'react';
 import man from '../../images/icon man header.svg'
 
 function Header() {
     const [isLogged, setIsLogged] = React.useState(true)
-    const [isActive, setIsActive] = React.useState(true)
+    const [isActive, setIsActive] = React.useState(false)
+    const [isMain, setIsMain] = React.useState(false)
+    const [isHidden, setIsHidden] = React.useState(false)
+    let location = useLocation()
+
+    React.useEffect(() => {
+        if ('/' === location.pathname) {
+            setIsMain(true)
+            setIsHidden(false)
+        } else if ('/404' === location.pathname) {
+            setIsHidden(true)
+            setIsMain(false)
+        } else {
+            setIsHidden(false)
+            setIsMain(false)
+        }
+        
+    }, [location])
 
     function change() {
-        setIsLogged(!isLogged)
+        setIsActive(!isActive)
     }
 
     return(
-        <div className={'header' + (isLogged ? ' header__loginned' : ' header__auth')} onClick={change}>
+        <>
+        {!isHidden && 
+        <div className={'header' + (isMain ? ' header_main' : '')}>
             <div className='header__container'>
                 <NavLink to='/' className='header__logo'></NavLink>
-                <div className={isLogged ? 'header__nav-container' : 'header__auth-container'}>
-                    {isLogged &&
-                    <>
-                        <nav className='header__nav'>
-                            <NavLink to='/movies' className={'header__nav-text' + (isActive ? ' header__nav-text_active' : '')}>Фильмы</NavLink>
-                            <NavLink to='/saved-movies' className='header__nav-text'>Сохраненные фильмы</NavLink>
-                        </nav>
-                        <NavLink to='/profile' className='header__profile'>
-                            <img alt='Иконка пользователя' src={man} className='header__profile-icon'/>
-                            <p className='header__profile-text'>Аккаунт</p>
-                        </NavLink>
-                    </>
-                    }
-                    {!isLogged &&
-                    <>
-                        <NavLink to='/signup' className='header__signup'>Регистрация</NavLink>
-                        <NavLink to='/signin' className='header__signin'>Войти</NavLink>
-                    </>
-                    }
+                {isLogged && <>
+                <div className='header__container-burger' onClick={change}>
+                    <span className={'header__burger' + (isActive ? ' header__burger_active' : '')}></span>
                 </div>
-                <div className='header__account-container'>
-
+                <div className={'header__container-nav' + (isActive ? ' header__container-nav_active' : '') + (isMain ? ' header__container-nav_main' : '')}>
+                    <div className='header__nav'>
+                        <NavLink to='/' className='header__nav-link header__nav-link-main'>Главная</NavLink>
+                        <NavLink to='/movies' className='header__nav-link'>Фильмы</NavLink>
+                        <NavLink to='/saved-movies' className='header__nav-link'>Сохранённые фильмы</NavLink>
+                    </div>
+                    <NavLink to='/me' className='header__account'>
+                        <img alt='значок пользователя' src={man} className='header__account-img'/>
+                        <p className='header__account-text'>Аккаунт</p>
+                    </NavLink>
                 </div>
+                <div className={'header__cover' + (isActive ? ' header__cover_active' : '')}></div>
+                </>}
+                {!isLogged &&
+                <div className='header__container-auth'>
+                    <NavLink to='/signup' className='header__register hover_link'>Регистрация</NavLink>
+                    <NavLink to='/signin' className='header__login'>Войти</NavLink>
+                </div>
+                }
+                
             </div>
         </div>
+        }
+        </>
     )
 };
 
