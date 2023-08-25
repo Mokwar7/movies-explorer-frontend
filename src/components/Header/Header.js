@@ -49,7 +49,7 @@ function Header() {
                         <p className='header__account-text'>Аккаунт</p>
                     </NavLink>
                 </div>
-                <div className={'header__cover' + (isActive ? ' header__cover_active' : '')}></div>
+                <div className={'header__cover' + (isActive ? ' header__cover_active' : '')} onClick={change}></div>
                 </>}
                 {!isLogged &&
                 <div className='header__container-auth'>

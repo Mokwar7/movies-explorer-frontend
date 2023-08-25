@@ -1,12 +1,12 @@
 .search {
-    padding: 70px 70px 80px;
+    padding: 70px;
     border-bottom: 1px solid #e8e8e8;
+    margin-bottom: 10px;
     background-color: #fafafa;
 }
 
 .search__container {
     height: 34px;
-    width: 100%;
     padding: 19px;
     display: flex;
     align-items: center;
@@ -14,6 +14,25 @@
     background-color: #fff;
     box-shadow: 0px 3px 14px 0px rgba(0, 0, 0, 0.08);
     justify-content: space-between;
+}
+
+.search__container-etc {
+    display: flex;
+    align-items: center;
+}
+
+.search__label-input {
+    display: flex;
+    width: 99%;
+    height: 34px;
+    align-items: center;
+}
+
+.search__icon {
+    width: 22px;
+    height: 22px;
+    margin-left: 6px;
+    display: block;
 }
 
 .search__input {
@@ -25,16 +44,18 @@
     font-weight: 400;
     line-height: 20px;
     width: 100%;
+    margin-left: 10px;
 }
 
-.search__input:focus {
-    outline: none;
+.search__input:focus + .search__icon {
+    margin-top: 100px;
+    display: none;
 }
 
 .search__button {
     margin-left: 46px;
     height: 34px;
-    min-width: 34px;
+    width: 34px;
     border-radius: 50%;
     background-color: #3456F3;
     padding: 0;
@@ -52,8 +73,60 @@
     margin: 0 29px 0 19px;
 }
 
-.search__checkbox {
+.search__label-checkbox {
     width: 36px;
     height: 20px;
-    
+    cursor: pointer;
+    position: relative;
+}
+
+.search__checkbox {
+    display: none;
+}
+
+.search__slider {
+    position: absolute;
+    top: 3px;
+    left: 1px;
+    right: 0;
+    bottom: 0;
+    background-color: #EBEBEB;
+    border-radius: 20px;
+    transition: 0.3s ease-in-out;
+    width: 34px;
+    height: 14px;
+}
+
+.search__slider:before {
+    position: absolute;
+    content: "";
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    left: 2px;
+    bottom: 2px;
+    background-color: #F5F5F5;
+    transition: 0.3s ease-in-out;
+}
+
+.search__checkbox:checked + .search__slider {
+    background-color: #2BE080;
+}
+
+.search__checkbox:checked + .search__slider:before {
+    transform: translateX(20px);
+}
+
+.search__text {
+    margin: 0 0 0 14px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 18px;
+}
+
+@media screen and (max-width: 1023px) {
+    .search {
+        padding: 80px 30px 109px;
+        margin-bottom: 11px;
+    }
 }
