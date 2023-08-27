@@ -3,7 +3,7 @@ import '../../index.css'
 
 function AboutProject() {
     return (
-        <div className='project' id='about-project'>
+        <section className='project' id='about-project'>
             <h2 className='project__header'>О проекте</h2>
             <span className='project__line'></span>
             <div className='project__container-about'>
@@ -38,7 +38,7 @@ function AboutProject() {
                     <p className='project__text-graph'>Front-end</p>
                 </div>
             </div>
-        </div>
+        </section>
     )
 };
 

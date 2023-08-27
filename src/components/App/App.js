@@ -19,7 +19,7 @@ function App() {
         <Route path='/signup' element={<Register />} />
         <Route path='/signin' element={<Login />} />
         <Route path='/404' element={<ErrorPage />} />
-        <Route path='/me' element={<Profile />} />
+        <Route path='/profile' element={<Profile />} />
         <Route path='/movies' element={<Movies />} />
         <Route path='/saved-movies' element={<SavedMovies />} />
         <Route path='*' element={<Navigate to='/404' />} />

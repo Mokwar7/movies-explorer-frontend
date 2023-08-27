@@ -93,6 +93,8 @@
     width: 100vw;
     max-width: 520px;
     z-index: 1;
+    padding: 0;
+    margin: 0;
 }
 
 .header__container-nav_main {
@@ -168,6 +170,8 @@
     justify-content: end;
     width: calc(100% - 38px);
     align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 .header__register {

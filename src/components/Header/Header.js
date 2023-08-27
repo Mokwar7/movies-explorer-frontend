@@ -4,7 +4,7 @@ import React from 'react';
 import man from '../../images/icon man header.svg'
 
 function Header() {
-    const [isLogged, setIsLogged] = React.useState(false)
+    const [isLogged, setIsLogged] = React.useState(true)
     const [isActive, setIsActive] = React.useState(false)
     const [isMain, setIsMain] = React.useState(false)
     const [isHidden, setIsHidden] = React.useState(false)
@@ -31,35 +31,35 @@ function Header() {
     return(
         <>
         {!isHidden && 
-        <div className={'header' + (isMain ? ' header_main' : '')}>
+        <header className={'header' + (isMain ? ' header_main' : '')}>
             <div className='header__container'>
                 <NavLink to='/' className='header__logo'></NavLink>
                 {isLogged && <>
                 <div className='header__container-burger' onClick={change}>
                     <span className={'header__burger' + (isActive ? ' header__burger_active' : '')}></span>
                 </div>
-                <div className={'header__container-nav' + (isActive ? ' header__container-nav_active' : '') + (isMain ? ' header__container-nav_main' : '')}>
+                <menu className={'header__container-nav' + (isActive ? ' header__container-nav_active' : '') + (isMain ? ' header__container-nav_main' : '')}>
                     <div className='header__nav'>
                         <NavLink to='/' className='header__nav-link header__nav-link-main'>Главная</NavLink>
                         <NavLink to='/movies' className='header__nav-link'>Фильмы</NavLink>
                         <NavLink to='/saved-movies' className='header__nav-link'>Сохранённые фильмы</NavLink>
                     </div>
-                    <NavLink to='/me' className='header__account'>
+                    <NavLink to='/profile' className='header__account'>
                         <img alt='значок пользователя' src={man} className='header__account-img'/>
                         <p className='header__account-text'>Аккаунт</p>
                     </NavLink>
-                </div>
+                </menu>
                 <div className={'header__cover' + (isActive ? ' header__cover_active' : '')} onClick={change}></div>
                 </>}
                 {!isLogged &&
-                <div className='header__container-auth'>
+                <menu className='header__container-auth'>
                     <NavLink to='/signup' className='header__register hover_link'>Регистрация</NavLink>
                     <NavLink to='/signin' className='header__login'>Войти</NavLink>
-                </div>
+                </menu>
                 }
                 
             </div>
-        </div>
+        </header>
         }
         </>
     )
