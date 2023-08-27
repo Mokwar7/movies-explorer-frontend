@@ -9,8 +9,13 @@ function SearchForm() {
         setChecked(!checked)
     }
 
+    function handleSubmit(e) {
+        console.log('GG form')
+        e.preventDefault()
+    }
+
     return (
-        <form className='search'>
+        <form className='search' onSubmit={handleSubmit}>
             <div className='search__container'>
                 <label className='search__label-input'>
                     <img className='search__icon' src={searchIcon} alt='значок поиска' />
@@ -19,11 +24,13 @@ function SearchForm() {
                 <div className='search__container-etc'>
                     <button className='search__button' type='submit'></button>
                     <span className='search__line'></span>
-                    <label className='search__label-checkbox'>
-                        <input className='search__checkbox' type='checkbox' checked={checked} onChange={handleCheck}></input>
-                        <span className='search__slider'></span>
-                    </label>
-                    <p className='search__text'>Короткометражки</p>
+                    <div className='search__container-short'>
+                        <label className='search__label-checkbox'>
+                            <input className='search__checkbox' type='checkbox' checked={checked} onChange={handleCheck}></input>
+                            <span className='search__slider'></span>
+                        </label>
+                        <p className='search__text'>Короткометражки</p>
+                    </div>
                 </div>
             </div> 
         </form>

@@ -26,6 +26,7 @@
     width: 99%;
     height: 34px;
     align-items: center;
+    cursor: text;
 }
 
 .search__icon {
@@ -44,12 +45,11 @@
     font-weight: 400;
     line-height: 20px;
     width: 100%;
-    margin-left: 10px;
+    margin-left: 16px;
 }
 
-.search__input:focus + .search__icon {
-    margin-top: 100px;
-    display: none;
+.search__input:focus {
+    outline: none;
 }
 
 .search__button {
@@ -71,6 +71,11 @@
     width: 1px;
     background-color: #cbcbcb;
     margin: 0 29px 0 19px;
+}
+
+.search__container-short {
+    display: flex;
+    gap: 14px;
 }
 
 .search__label-checkbox {
@@ -118,7 +123,7 @@
 }
 
 .search__text {
-    margin: 0 0 0 14px;
+    margin: 0;
     font-size: 13px;
     font-weight: 400;
     line-height: 18px;
@@ -128,5 +133,41 @@
     .search {
         padding: 80px 30px 109px;
         margin-bottom: 11px;
+    }
+
+    .search__line {
+        margin: 0 19px;
+    }
+
+    .search__container-short {
+        gap: 15px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .search {
+        padding: 80px 10px 109px;
+        margin-bottom: 11px;
+    }
+
+    .search__icon {
+        display: none;
+    }
+
+    .search__input {
+        margin: 0;
+        font-size: 14px;
+        line-height: 18px;
+    }
+
+    .search__line {
+        display: none;
+    }
+
+    .search__container-short {
+        position: absolute;
+        top: 271px;
+        left: 50%;
+        transform: translateX(-50%);
     }
 }

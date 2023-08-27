@@ -4,7 +4,7 @@ import React from 'react';
 import man from '../../images/icon man header.svg'
 
 function Header() {
-    const [isLogged, setIsLogged] = React.useState(true)
+    const [isLogged, setIsLogged] = React.useState(false)
     const [isActive, setIsActive] = React.useState(false)
     const [isMain, setIsMain] = React.useState(false)
     const [isHidden, setIsHidden] = React.useState(false)
@@ -14,7 +14,7 @@ function Header() {
         if ('/' === location.pathname) {
             setIsMain(true)
             setIsHidden(false)
-        } else if ('/404' === location.pathname) {
+        } else if ('/404' === location.pathname || '/signup' === location.pathname || '/signin' === location.pathname) {
             setIsHidden(true)
             setIsMain(false)
         } else {

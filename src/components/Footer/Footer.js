@@ -7,7 +7,7 @@ function Footer() {
     let location = useLocation()
 
     React.useEffect(() => {
-        if ('/404' === location.pathname || '/me' === location.pathname) {
+        if ('/404' === location.pathname || '/me' === location.pathname || '/signup' === location.pathname || '/signin' === location.pathname) {
             setIsHidden(true)
         } else {
             setIsHidden(false)
