@@ -16,6 +16,7 @@
     width: 91%;
     justify-content: space-between;
     margin: 0 auto;
+    position: relative;
 }
 
 .header__logo {
@@ -33,6 +34,13 @@
     justify-content: center;
     z-index: 2;
     cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.header__container-burger_active {
+    position: fixed;
+    top: 7.5px;
+    right: 9px;
 }
 
 .header__burger {
@@ -66,16 +74,19 @@
 
 .header__burger_active {
     background-color: #ffffff00;
-    position: fixed;
 }
 
 .header__burger_active::after {
-    margin-top: -2.5px;
+    width: 22px;
+    height: 3px;
     transform: rotate(45deg);
+    margin-top: -3px;
 }
 
 .header__burger_active::before {
+    width: 22px;
     transform: rotate(-45deg);
+    height: 3px;
     margin-top: 0;
 }
 
@@ -112,7 +123,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 124px;
+    margin-top: 144px;
 }
 
 .header__nav-link {
@@ -125,7 +136,7 @@
 
 .header__nav-link.active {
     text-decoration: underline;
-    text-underline-offset: 7px;
+    text-underline-offset: 11px;
     text-decoration-thickness: 2px;
 }
 
@@ -142,7 +153,7 @@
     border-radius: 50px;
     border: 2px solid rgba(170, 170, 170, 0.2);
     margin-top: auto;
-    margin-bottom: 50px;
+    margin-bottom: 46px;
     text-decoration: none;
     color: #000;
 }
@@ -204,9 +215,31 @@
 }
 
 @media screen and (min-width: 520px) {
+    .header__container {
+        width: calc(100% - 60px);
+        margin: 0 30px;
+    }
+
+    .header__account {
+        margin-bottom: 90px;
+    }
+
+    .header__nav {
+        margin-top: 159px;
+    }
+
+    .header__nav-link {
+        margin-top: 28px;
+    }
+
     .header__container-burger {
         width: 44px;
         height: 44px;
+    }
+
+    .header__container-burger_active {
+        top: 16px;
+        right: 16px;
     }
 
     .header__burger {
@@ -226,11 +259,19 @@
         margin-top: -10px;
     }
 
-    .header__burger_active::after {
-        margin-top: -3px;
+    .header__burger_active {
+        width: 22px;
     }
 
+    .header__burger_active::after {
+        width: 22px;
+        height: 3px;
+        margin-top: -3px;
+    }
+    
     .header__burger_active::before {
+        width: 22px;
+        height: 3px;
         margin-top: 0;
     }
 

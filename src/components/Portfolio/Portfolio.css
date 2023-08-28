@@ -69,6 +69,10 @@
     .portfolio__link {
         font-size: 28px;
     }
+
+    .portfolio__text {
+        font-size: 28px;
+    }
 }
 
 @media screen and (max-width: 767px) {
@@ -77,17 +81,24 @@
         width: calc(100% - 28px);
     }
 
+    .portfolio__header {
+        font-size: 14px;
+        line-height: 20px;
+        margin-bottom: 40px;
+    }
+
     .portfolio__link {
-        font-size: 18px;
-        letter-spacing: -0.72px;
-        line-height: 28px;
+        padding-bottom: 19px;
     }
 
     .portfolio__text {
+        font-size: 18px;
         line-height: 28px;
+        letter-spacing: -0.72px;
     }
 
     .portfolio__arr {
         line-height: 28px;
+        font-size: 18px;
     }
 }

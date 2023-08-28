@@ -108,6 +108,7 @@
         font-size: 30px;
         letter-spacing: -1.2px;
         margin-bottom: 24px;
+        line-height: normal;
     }
 
     .techs__text {

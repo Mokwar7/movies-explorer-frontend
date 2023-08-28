@@ -35,7 +35,7 @@ function Header() {
             <div className='header__container'>
                 <NavLink to='/' className='header__logo'></NavLink>
                 {isLogged && <>
-                <div className='header__container-burger' onClick={change}>
+                <div className={'header__container-burger' + (isActive ? ' header__container-burger_active' : '')} onClick={change}>
                     <span className={'header__burger' + (isActive ? ' header__burger_active' : '')}></span>
                 </div>
                 <menu className={'header__container-nav' + (isActive ? ' header__container-nav_active' : '') + (isMain ? ' header__container-nav_main' : '')}>

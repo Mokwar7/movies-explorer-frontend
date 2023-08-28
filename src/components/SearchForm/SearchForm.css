@@ -151,6 +151,11 @@
     .search {
         padding: 80px 10px 109px;
         margin-bottom: 11px;
+        width: calc(100% - 20px);
+    }
+
+    .search__container {
+        width: 262px;
     }
 
     .search__icon {
@@ -171,6 +176,12 @@
         position: absolute;
         top: 271px;
         left: 50%;
+        gap: 13px;
         transform: translateX(-50%);
+    }
+
+    .search__text {
+        font-size: 11px;
+        line-height: 18px;
     }
 }

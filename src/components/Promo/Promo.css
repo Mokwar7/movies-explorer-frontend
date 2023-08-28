@@ -34,11 +34,13 @@
 @media screen and (max-width: 767px) {
     .promo {
         background-image: url(../../images/promo_320.svg);
+        min-height: 570px;
     }
 
     .promo__header {
         font-size: 31px;
         line-height: 39px;
+        margin-bottom: 39px;
         letter-spacing: -1.24px;
     }
 }
