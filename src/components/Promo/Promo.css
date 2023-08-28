@@ -16,6 +16,19 @@
     font-weight: 400;
     max-width: 740px;
     text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: -2px;
+    line-height: 58px;
+}
+
+@media screen and (max-width: 1023px) {
+    .promo {
+        min-height: 784px;
+    }
+
+    .promo__header {
+        margin-bottom: 18px;
+    }
 }
 
 @media screen and (max-width: 767px) {

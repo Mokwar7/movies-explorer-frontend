@@ -41,6 +41,7 @@
     background-color: #000000;
     display: block;
     transition: 0.1s ease-in-out;
+    position: static;
 }
 
 .header__burger::after {
@@ -65,6 +66,7 @@
 
 .header__burger_active {
     background-color: #ffffff00;
+    position: fixed;
 }
 
 .header__burger_active::after {
@@ -78,7 +80,7 @@
 }
 
 .header__container-nav {
-    position: absolute;
+    position: fixed;
     visibility: hidden;
     opacity: 0;
     transition: 0.3s ease-in-out;
@@ -154,7 +156,7 @@
 .header__cover {
     z-index: 0;
     background-color: rgba(0, 0, 0, 0.3);
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100vh;
     left: 0;
@@ -309,5 +311,11 @@
 
     .header__account {
         margin: 0;
+    }
+}
+
+@media screen and (min-width: 1180px) {
+    .header__container {
+        width: 1140px;
     }
 }
