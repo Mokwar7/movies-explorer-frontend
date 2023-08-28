@@ -3,7 +3,7 @@ import '../../index.css'
 
 function AboutMe() {
     return (
-        <div className='me' id='about-me'>
+        <section className='me' id='about-me'>
             <h2 className='project__header'>Студент</h2>
             <span className='me__line'></span>
             <div className='me__container-about'>
@@ -21,7 +21,7 @@ function AboutMe() {
                 </div>
                 <div className='me__img'></div>
             </div>
-        </div>
+        </section>
     )
 };
 

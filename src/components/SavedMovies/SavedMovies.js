@@ -10,7 +10,7 @@ function SavedMovies() {
 
 
     return (
-        <>
+        <>  
             <SearchForm />
             <MoviesCardList />
         </>

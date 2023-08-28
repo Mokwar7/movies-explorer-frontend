@@ -19,7 +19,7 @@ function MoviesCardList() {
     //Здесь имитация карточек, в будущем, с помощью цикла и данных с апи будут карточки подгружаться
     //Также, когда будет интеграция с апи, кнопка "Еще" будет пропадать, если впервый раз придет меньше 16 карточек
     return (
-        <div className="movies-list">
+        <section className="movies-list">
             <div className="movies-list__container">
                 <MoviesCard image={cardImg} name='Новогодняя песня' duration='4м' isSaved={isSaved}/>
                 <MoviesCard image={cardImg} name='Новогодняя песня' duration='4м' isSaved={isSaved}/>
@@ -43,7 +43,7 @@ function MoviesCardList() {
                     Ещё
                 </button>
             </div>
-        </div>
+        </section>
     );
 }
 

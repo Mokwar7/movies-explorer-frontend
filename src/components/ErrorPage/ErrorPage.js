@@ -8,11 +8,11 @@ function ErrorPage() {
     }, [])
 
     return (
-        <div className='error'>
+        <section className='error'>
             <h3 className='error__code'>404</h3>
             <p className='error__text'>Страница не найдена</p>
             <NavLink to='/' className='error__link'>Назад</NavLink>
-        </div>
+        </section>
     )
 };
 

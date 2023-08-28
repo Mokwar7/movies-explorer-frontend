@@ -2,7 +2,7 @@ import '../../index.css'
 
 function Portfolio() {
     return (
-        <div className='portfolio'>
+        <section className='portfolio'>
             <h3 className='portfolio__header'>Портфолио</h3>
             <div className='portfolio__container-about'>
                 <a href='https://github.com/Mokwar7/how-to-learn' target="_blank" rel='noreferrer' className='portfolio__link'>
@@ -18,7 +18,7 @@ function Portfolio() {
                     <p className='portfolio__arr'>&#x2197;</p>
                 </a>
             </div>
-        </div>
+        </section>
     )
 };
 
