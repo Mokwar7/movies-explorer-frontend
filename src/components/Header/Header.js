@@ -4,7 +4,7 @@ import React from 'react';
 import man from '../../images/icon man header.svg'
 
 function Header() {
-    const [isLogged, setIsLogged] = React.useState(false)
+    const [isLogged, setIsLogged] = React.useState(true)
     const [isActive, setIsActive] = React.useState(false)
     const [isMain, setIsMain] = React.useState(false)
     const [isHidden, setIsHidden] = React.useState(false)
