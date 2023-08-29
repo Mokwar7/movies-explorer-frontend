@@ -44,6 +44,10 @@
     position: relative;
 }
 
+.card__label:hover .card__span {
+    box-shadow: 0px 3px 6px rgba(43, 224, 127, 0.5);
+}
+
 .card__checkbox {
     display: none;
 }
@@ -83,6 +87,10 @@
     height: 16px;
     cursor: pointer;
     transition: 0.3s ease-in-out;
+}
+
+.card__delete:hover {
+    transform: scale(1.25);
 }
 
 @media screen and (max-width: 1023px) {

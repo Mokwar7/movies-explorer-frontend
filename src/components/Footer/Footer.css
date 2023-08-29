@@ -4,6 +4,7 @@
     background-color: #f8f8f8;
     padding: 79px 70px 20px;
     flex-direction: column;
+    margin-top: auto;
 }
 
 .footer__header {

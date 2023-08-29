@@ -52,10 +52,10 @@ function Header() {
                 <div className={'header__cover' + (isActive ? ' header__cover_active' : '')} onClick={change}></div>
                 </>}
                 {!isLogged &&
-                <menu className='header__container-auth'>
+                <nav className='header__container-auth'>
                     <NavLink to='/signup' className='header__register hover_link'>Регистрация</NavLink>
                     <NavLink to='/signin' className='header__login'>Войти</NavLink>
-                </menu>
+                </nav>
                 }
                 
             </div>

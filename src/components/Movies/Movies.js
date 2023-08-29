@@ -10,10 +10,10 @@ function Movies() {
 
 
     return (
-        <>
+        <main>
             <SearchForm />
             <MoviesCardList />
-        </>
+        </main>
     );
 }
 

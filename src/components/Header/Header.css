@@ -4,6 +4,7 @@
     background-color: #FAFAFA;
     display: flex;
     align-items: center;
+    justify-content: center;
 }
 
 .header_main {
@@ -24,6 +25,11 @@
     background-size: contain;
     width: 38px;
     height: 38px;
+    transition: 0.3s ease-in-out;
+}
+
+.header__logo:hover {
+    transform: scale(1.05);
 }
 
 .header__container-burger {
@@ -35,6 +41,10 @@
     z-index: 2;
     cursor: pointer;
     transition: 0.3s ease-in-out;
+}
+
+.header__container-burger:hover {
+    opacity: 0.7;
 }
 
 .header__container-burger_active {
@@ -132,6 +142,11 @@
     margin-top: 24px;
     font-size: 18px;
     font-weight: 500;
+    transition: 0.3s ease-in-out;
+}
+
+.header__nav-link:hover {
+    opacity: 0.7;
 }
 
 .header__nav-link.active {
@@ -156,6 +171,12 @@
     margin-bottom: 46px;
     text-decoration: none;
     color: #000;
+    transition: 0.3s ease-in-out;
+}
+
+.header__account:hover {
+    transform: scale(1.025);
+    box-shadow: 0px 3px 3px rgba(52, 87, 243, 0.3);
 }
 
 .header__account-text {

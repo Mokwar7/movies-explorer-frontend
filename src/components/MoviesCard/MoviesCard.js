@@ -6,10 +6,10 @@ function MoviesCard({image, name, duration, isSaved}) {
 
     return (
         <div className="card">
-            <img src={image} alt="фотография карточки фильма" className="card__img" />
+            <img src={image} alt={'фотография ' + name} className="card__img" />
             <div className="card__container">
                 <div className="card__container-about">
-                    <h4 className="card__name">{name}</h4>
+                    <h2 className="card__name">{name}</h2>
                     <p className="card__time">{duration}</p>
                 </div>
                 {!isSaved && 

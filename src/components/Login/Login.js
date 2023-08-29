@@ -48,6 +48,8 @@ function Login () {
             if (!e.target.value) {
                 setErrorPassword('Пароль не может быть пустым')
             }
+        } else if (e.target.value.length > 30) {
+            setErrorPassword('Пароль должен быть короче 30 символов')
         } else {
             setErrorPassword('')
         }
@@ -65,33 +67,35 @@ function Login () {
     }
 
     return (
-        <section className='reg'>
-            <div className='reg__container'>
-                <NavLink to='/' className='header__logo reg__logo'></NavLink>
-                <h3 className='reg__header'>Рады видеть!</h3>
-                <form className='reg__form'>
-                    <div className='reg__container-label'>
-                        <label className='reg__label'>
-                            <p className='reg__text'>E-mail</p>
-                            <input className='reg__input' name='email' onBlur={blurHandler} placeholder='pochta@yandex.ru' type='email' required value={email} onChange={handleChangeEmail}></input>
-                            <span className='reg__error'>{emailDirty && (errorEmail)}</span>
-                        </label>
-                        <label className='reg__label'>
-                            <p className='reg__text'>Пароль</p>
-                            <input className='reg__input' name='password' onBlur={blurHandler} placeholder='qwerty123' type='password' required value={password} onChange={handleChangePassword}></input>
-                            <span className='reg__error'>{passwordDirty && (errorPassword)}</span>
-                        </label>
-                    </div>
-                    <div className='reg__container-btn'>
-                        <button type='submit' className='reg__button' disabled={!formValid}>Войти</button>
-                        <p className='reg__suggest'>
-                            Ещё не зарегистрированы?
-                            <NavLink className='reg__link' to='/signup'> Регистрация</NavLink>
-                        </p>
-                    </div>
-                </form>
-            </div>
-        </section>
+        <main>
+            <section className='reg'>
+                <div className='reg__container'>
+                    <NavLink to='/' className='header__logo reg__logo'></NavLink>
+                    <h3 className='reg__header'>Рады видеть!</h3>
+                    <form className='reg__form'>
+                        <div className='reg__container-label'>
+                            <label className='reg__label'>
+                                <p className='reg__text'>E-mail</p>
+                                <input className='reg__input' name='email' onBlur={blurHandler} placeholder='pochta@yandex.ru' type='email' required value={email} onChange={handleChangeEmail}></input>
+                                <span className='reg__error'>{emailDirty && (errorEmail)}</span>
+                            </label>
+                            <label className='reg__label'>
+                                <p className='reg__text'>Пароль</p>
+                                <input className='reg__input' name='password' onBlur={blurHandler} placeholder='qwerty123' type='password' required value={password} onChange={handleChangePassword}></input>
+                                <span className='reg__error'>{passwordDirty && (errorPassword)}</span>
+                            </label>
+                        </div>
+                        <div className='reg__container-btn'>
+                            <button type='submit' className='reg__button' disabled={!formValid}>Войти</button>
+                            <p className='reg__suggest'>
+                                Ещё не зарегистрированы?
+                                <NavLink className='reg__link' to='/signup'> Регистрация</NavLink>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
     )
 };
 

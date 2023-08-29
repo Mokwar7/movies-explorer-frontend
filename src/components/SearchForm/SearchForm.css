@@ -67,6 +67,11 @@
     background-image: url(../../images/search_icon.svg);
     background-position: center;
     background-repeat: no-repeat;
+    transition: 0.3s ease-in-out;
+}
+
+.search__button:hover {
+    transform: scale(1.05);
 }
 
 .search__line {
@@ -86,6 +91,11 @@
     height: 20px;
     cursor: pointer;
     position: relative;
+    transition: 0.3s ease-in-out;
+}
+
+.search__label-checkbox:hover {
+    transform: scale(1.05);
 }
 
 .search__checkbox {
@@ -132,10 +142,21 @@
     line-height: 18px;
 }
 
+@media screen and (max-width: 1180px) {
+    .search__container {
+        width: 812px;
+    }
+}
+
 @media screen and (max-width: 1023px) {
     .search {
         padding: 80px 30px 109px;
         margin-bottom: 11px;
+        width: calc(100% - 60px);
+    }
+
+    .search__container {
+        width: 670px;
     }
 
     .search__line {

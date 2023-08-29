@@ -4,6 +4,7 @@
     align-items: center;
     background-color: #fff;
     padding: 74px 0 0;
+    height: calc(100vh - 148px);
 }
 
 .profile__header {
@@ -51,6 +52,7 @@
 .profile__input:focus {
     outline: none;
     box-shadow: none;
+    color: #3456F3;
 }
 
 .profile__edit-btn {
@@ -80,6 +82,7 @@
     font-weight: 500;
     color: #ee3465;
     transition: 0.3s ease-in-out;
+    text-decoration: none;
 }
 
 .profile__exit-btn:hover {
@@ -100,6 +103,11 @@
     transition: 0.3s ease-in-out;
 }
 
+.profile__save-btn:disabled {
+    background-color: #f8f8f8;
+    color: #c2c2c2;
+}
+
 .profile__save-btn:hover {
     opacity: 0.8;
 }
@@ -118,6 +126,7 @@
 @media screen and (max-width: 1023px) {
     .profile {
         padding-top: 236px;
+        max-height: 500px;
     }
 
     .profile__header {

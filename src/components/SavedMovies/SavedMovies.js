@@ -10,10 +10,10 @@ function SavedMovies() {
 
 
     return (
-        <>  
+        <main>  
             <SearchForm />
             <MoviesCardList />
-        </>
+        </main>
     );
 }
 
