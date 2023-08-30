@@ -1,0 +1,153 @@
+.me {
+    display: flex;
+    padding: 110px 70px 100px;
+    width: calc(100% - 140px);
+    background-color: #fafafa;
+    flex-direction: column;
+}
+
+.me__line {
+    width: 100%;
+    height: 1px;
+    background-color: #000;
+    margin: 23px 0 66px;
+}
+
+.me__container-about {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.me__container-text {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.me__header {
+    margin: 0 0 18px;
+    font-size: 50px;
+    font-weight: 400;
+    line-height: 58px;
+    letter-spacing: -2px;
+}
+
+.me__subheader {
+    margin: 0 0 26px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 20px;
+}
+
+.me__text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 400;
+}
+
+.me__link {
+    text-decoration: none;
+    color: #000;
+    transition: 0.3s ease-in-out;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: auto;
+}
+
+.me__link:hover {
+    opacity: 0.7;
+}
+
+.me__img {
+    background-image: url(../../images/me_img.png);
+    width: 270px;
+    height: 327px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 1023px) {
+    .me {
+        padding: 90px 50px;
+        width: calc(100% - 100px);
+    }
+
+    .me__container-text {
+        width: 364px;
+    }
+
+    .me__header {
+        font-size: 40px;
+        line-height: 40px;
+        letter-spacing: -1.6px;
+        margin-bottom: 16px;
+    }
+
+    .me__subheader {
+        font-size: 12px;
+        line-height: 18px;
+        margin-bottom: 20px;
+    }
+
+    .me__text {
+        font-size: 12px;
+        line-height: 18px;
+    }
+
+    .me__img {
+        width: 255px;
+        height: 307px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .me {
+        padding: 70px 14px;
+        width: calc(100% - 28px);
+    }
+
+    .me__line {
+        margin: 28px 0 60px;
+    }
+
+    .me__container-about {
+        flex-direction: column-reverse;
+        align-items: center;
+        gap: 40px;
+    }
+
+    .me__container-text {
+        width: 100%;
+    }
+
+    .me__header {
+        font-size: 30px;
+        line-height: normal;
+        letter-spacing: -1.2px;
+        margin-bottom: 20px;
+    }
+
+    .me__subheader {
+        font-size: 11px;
+        line-height: 16px;
+    }
+
+    .me__text {
+        font-size: 11px;
+        line-height: 16px;
+    }
+
+    .me__link {
+        margin-top: 40px;
+    }
+
+    .me__img {
+        max-width: 100%;
+        width: 292px;
+        height: 352px;
+    }
+}

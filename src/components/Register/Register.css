@@ -1,0 +1,156 @@
+.reg {
+    background-color: #fff;
+    width: 100%;
+    min-height: calc(100vh - 140px);
+    display: flex;
+    justify-content: center;
+    padding: 70px 0;
+}
+
+.reg__container {
+    width: 396px;
+    display: flex;
+    flex-direction: column;
+}
+
+.reg__logo {
+    min-height: 38px;
+}
+
+.reg__logo {
+    width: 38px;
+    height: 38px;
+}
+
+.reg__header {
+    margin: 40px 0;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.reg__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.reg__container-label {
+    display: flex;
+    flex-direction: column;
+}
+
+.reg__label {
+    display: flex;
+    flex-direction: column;
+    cursor: text;
+}
+
+.reg__text {
+    font-size: 10px;
+    font-weight: 400;
+    color: #a0a0a0;
+    margin: 0;
+}
+
+.reg__input {
+    border: 0;
+    padding: 0 0 10px;
+    margin-top: 5px;
+    border-bottom: 1px solid #e8e8e8;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.reg__input:focus {
+    outline: none;
+    border-bottom: 1px solid #3456f3;
+}
+
+.reg__error {
+    font-size: 10px;
+    color: #ee3465;
+    font-weight: 400;
+    min-height: 24px;
+    margin-top: 6px;
+}
+
+.reg__container-btn {
+    display: flex;
+    flex-direction: column;
+}
+
+.reg__button {
+    background-color: #3456f3;
+    border: 0;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    width: 396px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    padding: 0;
+    cursor: pointer;
+    margin-top: 30px;
+    transition: 0.3s ease-in-out;
+}
+
+.reg__button:hover {
+    background-color: rgba(52, 87, 243, 0.8);
+}
+
+.reg__button:disabled {
+    background-color: #f8f8f8;
+    color: #c2c2c2;
+}
+
+.reg__suggest {
+    text-align: center;
+    color: #a0a0a0;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 16px 0 0;
+}
+
+.reg__link {
+    color: #3456f3;
+    text-decoration: none;
+    transition: 0.3s ease-in-out;
+}
+
+.reg__link:hover {
+    opacity: 0.7;
+}
+
+@media screen and (max-width: 767px) {
+    .reg {
+        padding: 56px 0 30px;
+        min-height: calc(100vh - 86px);
+    }
+
+    .reg__container {
+        width: 260px;
+    }
+
+    .reg__logo {
+        align-self: center;
+    }
+
+    .reg__header {
+        margin: 50px 0 80px;
+        text-align: center;
+    }
+
+    .reg__button {
+        width: 100%;
+        font-size: 12px;
+    }
+
+    .reg__suggest {
+        margin-top: 14px;
+        font-size: 12px;
+    }
+}
