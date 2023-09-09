@@ -1,12 +1,14 @@
+/* eslint-disable default-case */
 import { NavLink } from 'react-router-dom';
 import '../../index.css'
 import React from 'react'
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile() {
+function Profile({exit}) {
     const [isActive, setIsActive] = React.useState(false);
-    //Подставил данные вместо БД
-    const [name, setName] = React.useState('Олег');
-    const [email, setEmail] = React.useState('pochta@yandex.ru');
+    const user = React.useContext(CurrentUserContext)
+    const [name, setName] = React.useState(user.name);
+    const [email, setEmail] = React.useState(user.email);
     const [errorName, setErrorName] = React.useState('')
     const [errorEmail, setErrorEmail] = React.useState('')
     const [nameDirty, setNameDirty] = React.useState(false)
@@ -16,8 +18,9 @@ function Profile() {
     const err = ''
 
     React.useEffect(() => {
-        document.title = 'Аккаунт'
-    }, [])
+        document.title = 'Мой аккаунт'
+        console.log(user)
+    }, [user])
 
     React.useEffect(() => {
         if (errorEmail || errorName) {
@@ -95,7 +98,7 @@ function Profile() {
                     </div>
                     {!isActive && <>
                     <button className='profile__edit-btn' onClick={setActive} type='button'>Редактировать</button>
-                    <NavLink className='profile__exit-btn' to='/'>Выйти из аккаунта</NavLink>
+                    <NavLink className='profile__exit-btn' to='/' onClick={exit}>Выйти из аккаунта</NavLink>
                     </>}
                     {isActive && <>
                     <span className='profile__err'>{err}</span>

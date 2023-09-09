@@ -4,15 +4,37 @@ import searchIcon from '../../images/search_icon_gray.svg'
 
 function SearchForm() {
     const [checked, setChecked] = React.useState(true)
+    const [arr, setArr] = React.useState([])
 
     function handleCheck() {
         setChecked(!checked)
     }
 
     function handleSubmit(e) {
-        console.log('GG form')
         e.preventDefault()
+        search()
     }
+
+    function search() {
+        fetch('https://api.nomoreparties.co/beatfilm-movies', {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json"
+          },
+        })
+          .then((res) => {
+            return res.json()
+          })
+          .then((res) => {
+            setArr(res)
+            console.log('a')
+          })
+          .catch(err => console.log(err))
+    }
+
+    React.useEffect(() => {
+        console.log(arr.filter((film) => film.country === 'Испания'))
+    }, [arr])
 
     return (
         <section>

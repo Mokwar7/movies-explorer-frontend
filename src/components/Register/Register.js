@@ -1,7 +1,7 @@
 /* eslint-disable default-case */
 import '../../index.css'
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 function Register () {
     const [email, setEmail] = React.useState('')
@@ -14,7 +14,9 @@ function Register () {
     const [emailDirty, setEmailDirty] = React.useState(false)
     const [passwordDirty, setPasswordDirty] = React.useState(false)
     const [formValid, setFormValid] = React.useState(false)
+    const [errorRes, setErrorRes] = React.useState('')
     const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    let nav = useNavigate()
 
     React.useEffect(() => {
         document.title = 'Регистрация'
@@ -88,13 +90,46 @@ function Register () {
        }
     }
 
+    function reg(evt) {
+        evt.preventDefault()
+        return fetch('http://localhost:3001/signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
+            },
+            body: JSON.stringify({
+                'password': password,
+                'email': email,
+                'name': name
+            })
+          })
+          .then((res) => {
+            if (res.ok) {
+              return res.json()
+            }
+            return Promise.reject(res)
+          })
+          .then((result) => {
+            nav('/signin', {replace: true})
+          })
+          .catch((err) => {
+            if (err.status === 409) {
+                setErrorRes('Данная почта уже зарегистрирована.')
+                setFormValid(false)
+            } else {
+                setErrorRes('Что-то пошло не так.')
+            }
+        })
+    }
+
     return (
         <main>
             <section className='reg'>
                 <div className='reg__container'>
                     <NavLink to='/' className='header__logo reg__logo'></NavLink>
                     <h1 className='reg__header'>Добро пожаловать!</h1>
-                    <form className='reg__form'>
+                    <form className='reg__form' onSubmit={reg}>
                         <div className='reg__container-label'>
                             <label className='reg__label'>
                                 <p className='reg__text'>Имя</p>
@@ -113,6 +148,7 @@ function Register () {
                             </label>
                         </div>
                         <div className='reg__container-btn'>
+                            <span className='profile__err reg__err'>{errorRes}</span>
                             <button type='submit' className='reg__button' disabled={!formValid}>Войти</button>
                             <p className='reg__suggest'>
                                 Уже зарегистрированы?
