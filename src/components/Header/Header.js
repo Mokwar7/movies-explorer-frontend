@@ -3,7 +3,7 @@ import { NavLink, useLocation } from 'react-router-dom';
 import React from 'react';
 import man from '../../images/icon man header.svg'
 
-function Header({isLoggedIn}) {
+function Header() {
     const [isActive, setIsActive] = React.useState(false)
     const [isMain, setIsMain] = React.useState(false)
     const [isHidden, setIsHidden] = React.useState(false)
@@ -32,7 +32,7 @@ function Header({isLoggedIn}) {
         <header className={'header' + (isMain ? ' header_main' : '')}>
             <div className='header__container'>
                 <NavLink to='/' className='header__logo'></NavLink>
-                {isLoggedIn && <>
+                {localStorage.getItem('logged') && <>
                 <div className={'header__container-burger' + (isActive ? ' header__container-burger_active' : '')} onClick={change}>
                     <span className={'header__burger' + (isActive ? ' header__burger_active' : '')}></span>
                 </div>
@@ -49,7 +49,7 @@ function Header({isLoggedIn}) {
                 </menu>
                 <div className={'header__cover' + (isActive ? ' header__cover_active' : '')} onClick={change}></div>
                 </>}
-                {!isLoggedIn &&
+                {!localStorage.getItem('logged') &&
                 <nav className='header__container-auth'>
                     <NavLink to='/signup' className='header__register hover_link'>Регистрация</NavLink>
                     <NavLink to='/signin' className='header__login'>Войти</NavLink>

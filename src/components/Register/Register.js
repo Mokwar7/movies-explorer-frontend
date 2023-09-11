@@ -149,7 +149,7 @@ function Register () {
                         </div>
                         <div className='reg__container-btn'>
                             <span className='profile__err reg__err'>{errorRes}</span>
-                            <button type='submit' className='reg__button' disabled={!formValid}>Войти</button>
+                            <button type='submit' className='reg__button' disabled={!formValid}>Зарегистрироваться</button>
                             <p className='reg__suggest'>
                                 Уже зарегистрированы?
                                 <NavLink className='reg__link' to='/signin'> Войти</NavLink>

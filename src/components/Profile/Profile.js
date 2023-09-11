@@ -7,8 +7,8 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 function Profile({exit}) {
     const [isActive, setIsActive] = React.useState(false);
     const user = React.useContext(CurrentUserContext)
-    const [name, setName] = React.useState(user.name);
-    const [email, setEmail] = React.useState(user.email);
+    const [name, setName] = React.useState('');
+    const [email, setEmail] = React.useState('');
     const [errorName, setErrorName] = React.useState('')
     const [errorEmail, setErrorEmail] = React.useState('')
     const [nameDirty, setNameDirty] = React.useState(false)
@@ -18,9 +18,13 @@ function Profile({exit}) {
     const err = ''
 
     React.useEffect(() => {
-        document.title = 'Мой аккаунт'
-        console.log(user)
+        setName(user.name)
+        setEmail(user.email)
     }, [user])
+
+    React.useEffect(() => {
+        document.title = 'Мой аккаунт'
+    }, [])
 
     React.useEffect(() => {
         if (errorEmail || errorName) {

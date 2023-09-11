@@ -89,7 +89,6 @@ function Login ({login}) {
         })
         .then((result) => {
           localStorage.setItem('jwt', result.token)
-          nav('/', {replace: true})
           login()
         })
         .catch((err) => {

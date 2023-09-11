@@ -15,12 +15,11 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({})
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false)
+  const [arr, setArr] = React.useState([])
+  const [clicked, setClicked] = React.useState(false)
+  const [preloader, setPreloader] = React.useState(false)
+  const [errSearch, setErrSearch] = React.useState(false)
   const nav = useNavigate()
-
-  React.useEffect(() => {
-    console.log(currentUser)
-  }, [currentUser])
 
   React.useEffect(() => {
     if (localStorage.getItem('jwt')) {
@@ -39,21 +38,24 @@ function App() {
         })
         .then((data) => {
           setCurrentUser(data.data)
-          setIsLoggedIn(true)
-          nav('/', {replace: true})
+          localStorage.setItem('logged', true)
         })
-        .catch(err => console.log(err))
+        .catch((err) => {
+          console.log(err)
+          localStorage.removeItem('logged')
+        })
     }
   }, [])
 
   function exit() {
     localStorage.removeItem('jwt')
+    localStorage.removeItem('logged')
+    localStorage.removeItem('searchInput')
+    localStorage.removeItem('isShort')
     nav('/', {replace: true})
-    setIsLoggedIn(false)
   }
 
   function login() {
-    setIsLoggedIn(true)
     fetch(`http://localhost:3001/users/me`, {
         method: 'GET',
         headers: {
@@ -69,16 +71,104 @@ function App() {
         })
         .then((data) => {
           setCurrentUser(data.data)
-          setIsLoggedIn(true)
+          localStorage.setItem('logged', true)
           nav('/', {replace: true})
         })
         .catch(err => console.log(err))
   }
 
+  function search(checked, searchInput) {
+    localStorage.setItem('searchInput', searchInput)
+    localStorage.setItem('isShort', checked)
+    setClicked(true)
+    setPreloader(true)
+    fetch('https://api.nomoreparties.co/beatfilm-movies', {
+     method: 'GET',
+     headers: {
+       "Content-Type": "application/json"
+     },
+   })
+     .then((res) => {
+       setArr([])
+       return res.json()
+     })
+     .then((res) => {
+       if (checked === false) {
+           setArr(res.filter((film) => film.duration > 52 && (film.nameEN.includes(searchInput) || film.nameRU.includes(searchInput))))
+       } else {
+           setArr(res.filter((film) => film.nameEN.includes(searchInput) || film.nameRU.includes(searchInput)))
+       }
+       setPreloader(false)
+       setErrSearch(false)
+     })
+     .catch((err) => {
+      console.log(err)
+      setPreloader(false)
+      setErrSearch(true)
+    })
+  }
+
+  function handleSaveClick(data) {
+    return fetch('http://localhost:3001/movies', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
+          },
+          body: JSON.stringify({
+            'country': data.country,
+            'director': data.director,
+            'duration': data.duration,
+            'year': data.year,
+            'description': data.description,
+            'image': `https://api.nomoreparties.co${data.image.url}`,
+            'trailerLink': data.trailerLink,
+            'nameRU': data.nameRU,
+            'nameEN': data.nameEN,
+            'thumbnail': `https://api.nomoreparties.co${data.image.formats.thumbnail.url}`,
+            'movieId': data.id,
+          })
+        })
+        .then((res) => {
+          if (res.ok) {
+            return res.json()
+          }
+          return Promise.reject(res)
+        })
+        .then((result) => {
+          console.log(result)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+  }
+
+  function handleDeleteClick(data) {
+    return fetch(`http://localhost:3001/movies/${data.id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
+          },
+        })
+        .then((res) => {
+          if (res.ok) {
+            return res.json()
+          }
+          return Promise.reject(res)
+        })
+        .then((result) => {
+          console.log(result)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="App">
-        <Header isLoggedIn={isLoggedIn}/>
+        <Header />
         <Routes>
           <Route path='/signup' element={<Register />} />
           <Route path='/signin' element={<Login login={login} />} />
@@ -86,16 +176,20 @@ function App() {
           <Route path='/' element={<Main />} />
           <Route path='/profile' element={<ProtectedRouteElement 
             element={Profile}
-            isLoggedIn={isLoggedIn}
             exit={exit}
           />}/>
           <Route path='/movies' element={<ProtectedRouteElement 
             element={Movies}
-            isLoggedIn={isLoggedIn}
+            search={search}
+            clicked={clicked}
+            preloader={preloader}
+            errSearch={errSearch}
+            handleSaveClick={handleSaveClick}
+            handleDeleteClick={handleDeleteClick}
+            arr={arr}
           />}/>
           <Route path='/saved-movies' element={<ProtectedRouteElement 
             element={SavedMovies}
-            isLoggedIn={isLoggedIn}
           />}/>
           <Route path='*' element={<Navigate to='/404' />} />
           </Routes>
