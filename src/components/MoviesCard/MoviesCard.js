@@ -21,7 +21,6 @@ function MoviesCard({isSaved, handleSaveClick, data, handleDeleteClick}) {
     }, [])
     
     function onLoading() {
-      console.log('a')
     }
 
     function handleDeleteClickBtn() {
@@ -35,26 +34,6 @@ function MoviesCard({isSaved, handleSaveClick, data, handleDeleteClick}) {
             handleDeleteClick(data.id)
         }
         setChecked(!checked)
-
-        return fetch(`http://localhost:3001/movies`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
-          },
-        })
-        .then((res) => {
-          if (res.ok) {
-            return res.json()
-          }
-          return Promise.reject(res)
-        })
-        .then((result) => {
-          console.log(result)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
     }
 
     return (

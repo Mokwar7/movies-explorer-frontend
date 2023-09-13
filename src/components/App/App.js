@@ -167,7 +167,6 @@ function App() {
           return Promise.reject(res)
         })
         .then((result) => {
-          console.log(result)
         })
         .catch((err) => {
           console.log(err)
@@ -189,7 +188,6 @@ function App() {
           return Promise.reject(res)
         })
         .then((result) => {
-          console.log(result)
         })
         .catch((err) => {
           console.log(err)

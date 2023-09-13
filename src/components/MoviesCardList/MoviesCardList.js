@@ -4,7 +4,7 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 import { useLocation } from 'react-router-dom';
 import Preloader from '../Preloader/Preloader';
 
-function MoviesCardList({arr, clicked, preloader, myArray, errSearch, handleSaveClick, handleDeleteClick}) {
+function MoviesCardList({arr, clicked, myArrayS, preloader, myArray, errSearch, handleSaveClick, handleDeleteClick}) {
     const [isSaved, setIsSaved] = React.useState(false)
     const [maxCards, setMaxCards] = React.useState(16)
     const [myArr, setMyArr] = React.useState([])
@@ -43,25 +43,26 @@ function MoviesCardList({arr, clicked, preloader, myArray, errSearch, handleSave
             setIsSavedPage(false)
         }
 
-        fetch(`http://localhost:3001/movies`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
-          },
-        })
-        .then((res) => {
-          if (res.ok) {
-            return res.json()
-          }
-          return Promise.reject(res)
-        })
-        .then((result) => {
-          setMyArr(result.data)
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+        //fetch(`http://localhost:3001/movies`, {
+        //  method: 'GET',
+        //  headers: {
+        //    'Content-Type': 'application/json',
+        //    "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
+        //  },
+        //})
+        //.then((res) => {
+        //  if (res.ok) {
+        //    return res.json()
+        //  }
+        //  return Promise.reject(res)
+        //})
+        //.then((result) => {
+        //  setMyArr(result.data)
+        //  console.log(result)
+        //})
+        //.catch((err) => {
+        //  console.log(err)
+        //})
     }, [])
 
     React.useEffect(() => {
@@ -90,8 +91,8 @@ function MoviesCardList({arr, clicked, preloader, myArray, errSearch, handleSave
 
 
     arr.forEach(element => {
-        if (myArr !== undefined) {
-            myArr.filter((film) => film.movieId === element.id ? element.lol = 12 : '')
+        if (myArrayS !== undefined) {
+            myArrayS.filter((film) => film.movieId === element.id ? element.lol = 12 : '')
         }
     });
 
