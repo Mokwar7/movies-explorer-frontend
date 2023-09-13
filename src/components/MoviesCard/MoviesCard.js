@@ -20,8 +20,7 @@ function MoviesCard({isSaved, handleSaveClick, data, handleDeleteClick}) {
       }
     }, [])
     
-    function onLoading() {
-    }
+    function onLoading() {}
 
     function handleDeleteClickBtn() {
       handleDeleteClick(data.movieId)

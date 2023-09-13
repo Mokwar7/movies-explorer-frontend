@@ -3,14 +3,22 @@ import '../../index.css'
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { useLocation } from 'react-router-dom';
 import Preloader from '../Preloader/Preloader';
+import MainApi from '../../utils/MainApi';
 
-function MoviesCardList({arr, clicked, myArrayS, preloader, myArray, errSearch, handleSaveClick, handleDeleteClick}) {
+function MoviesCardList({arr, clicked, preloader, myArray, errSearch, handleSaveClick, handleDeleteClick}) {
     const [isSaved, setIsSaved] = React.useState(false)
     const [maxCards, setMaxCards] = React.useState(16)
     const [myArr, setMyArr] = React.useState([])
     const [widthSize, setWidthSize] = React.useState(window.innerWidth)
     const [grade, setGrade] = React.useState(4)
     const [isSavedPage, setIsSavedPage] = React.useState(false)
+    const mainApi = new MainApi({
+        url: 'http://localhost:3001/',
+        headers: {
+            'Content-Type': 'application/json',
+            "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
+        }
+    })
     let maxWidth = 16
     let midWidth = 12
     let min2Width = 8
@@ -42,27 +50,6 @@ function MoviesCardList({arr, clicked, myArrayS, preloader, myArray, errSearch, 
         } else if (location.pathname === '/movies') {
             setIsSavedPage(false)
         }
-
-        //fetch(`http://localhost:3001/movies`, {
-        //  method: 'GET',
-        //  headers: {
-        //    'Content-Type': 'application/json',
-        //    "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
-        //  },
-        //})
-        //.then((res) => {
-        //  if (res.ok) {
-        //    return res.json()
-        //  }
-        //  return Promise.reject(res)
-        //})
-        //.then((result) => {
-        //  setMyArr(result.data)
-        //  console.log(result)
-        //})
-        //.catch((err) => {
-        //  console.log(err)
-        //})
     }, [])
 
     React.useEffect(() => {
@@ -89,10 +76,20 @@ function MoviesCardList({arr, clicked, myArrayS, preloader, myArray, errSearch, 
         setMaxCards(maxCards + grade)
     }
 
+    React.useEffect(() => {
+        mainApi.getMovies()
+          .then((result) => {
+            setMyArr(result.data)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+    }, [arr])
+
 
     arr.forEach(element => {
-        if (myArrayS !== undefined) {
-            myArrayS.filter((film) => film.movieId === element.id ? element.lol = 12 : '')
+        if (myArr !== undefined) {
+            myArr.filter((film) => film.movieId === element.id ? element.lol = 12 : '')
         }
     });
 

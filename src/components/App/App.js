@@ -12,6 +12,7 @@ import React from 'react';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import ProtectedRouteElement from '../ProtectedRoute/ProtectedRoute'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
+import MainApi from '../../utils/MainApi';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({})
@@ -20,23 +21,18 @@ function App() {
   const [clicked, setClicked] = React.useState(false)
   const [preloader, setPreloader] = React.useState(false)
   const [errSearch, setErrSearch] = React.useState(false)
+  const mainApi = new MainApi({
+    url: 'http://localhost:3001/',
+    headers: {
+        'Content-Type': 'application/json',
+        "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
+    }
+  })
   const nav = useNavigate()
 
   React.useEffect(() => {
     if (localStorage.getItem('jwt')) {
-      fetch(`http://localhost:3001/users/me`, {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization" : `Bearer ${localStorage.getItem('jwt')}`
-        },
-      })
-        .then((res) => {
-          if (res.ok) {
-            return res.json()
-          }
-          return Promise.reject(`Ошибка: ${res.status}`);
-        })
+      mainApi.auth()
         .then((data) => {
           setCurrentUser(data.data)
           localStorage.setItem('logged', true)
@@ -57,25 +53,16 @@ function App() {
   }
 
   function login() {
-    fetch(`http://localhost:3001/users/me`, {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization" : `Bearer ${localStorage.getItem('jwt')}`
-        },
-      })
-        .then((res) => {
-          if (res.ok) {
-            return res.json()
-          }
-          return Promise.reject(`Ошибка: ${res.status}`);
-        })
+    mainApi.auth()
         .then((data) => {
           setCurrentUser(data.data)
           localStorage.setItem('logged', true)
           nav('/', {replace: true})
         })
-        .catch(err => console.log(err))
+        .catch((err) => {
+          console.log(err)
+          localStorage.removeItem('logged')
+        })
   }
 
   function search(checked, searchInput) {
@@ -112,18 +99,12 @@ function App() {
   function search2(checked, searchInput) {
     setClicked(true)
     setPreloader(true)
-    fetch(`http://localhost:3001/movies`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
-          },
-    })
-     .then((res) => {
+    mainApi.getMovies()
+      .then((result) => {
         setMyArr([])
-        return res.json()
-     })
-     .then((res) => {
+        return result
+      })
+      .then((res) => {
        if (checked === false) {
         setMyArr(res.data.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
        } else {
@@ -131,7 +112,7 @@ function App() {
        }
        setPreloader(false)
        setErrSearch(false)
-     })
+      })
      .catch((err) => {
       console.log(err)
       setPreloader(false)
@@ -166,8 +147,6 @@ function App() {
           }
           return Promise.reject(res)
         })
-        .then((result) => {
-        })
         .catch((err) => {
           console.log(err)
         })
@@ -186,8 +165,6 @@ function App() {
             return res.json()
           }
           return Promise.reject(res)
-        })
-        .then((result) => {
         })
         .catch((err) => {
           console.log(err)
