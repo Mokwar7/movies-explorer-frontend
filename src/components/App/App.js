@@ -1,7 +1,7 @@
 import './App.css';
 import Main from '../Main/Main';
 import Header from '../Header/Header'
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Footer from '../Footer/Footer';
@@ -16,6 +16,7 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 function App() {
   const [currentUser, setCurrentUser] = React.useState({})
   const [arr, setArr] = React.useState([])
+  const [myArr, setMyArr] = React.useState([])
   const [clicked, setClicked] = React.useState(false)
   const [preloader, setPreloader] = React.useState(false)
   const [errSearch, setErrSearch] = React.useState(false)
@@ -94,9 +95,39 @@ function App() {
      })
      .then((res) => {
        if (checked === false) {
-           setArr(res.filter((film) => film.duration > 52 && (film.nameEN.includes(searchInput) || film.nameRU.includes(searchInput))))
+           setArr(res.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
        } else {
-           setArr(res.filter((film) => film.nameEN.includes(searchInput) || film.nameRU.includes(searchInput)))
+           setArr(res.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
+       }
+       setPreloader(false)
+       setErrSearch(false)
+     })
+     .catch((err) => {
+      console.log(err)
+      setPreloader(false)
+      setErrSearch(true)
+    })
+  }
+
+  function search2(checked, searchInput) {
+    setClicked(true)
+    setPreloader(true)
+    fetch(`http://localhost:3001/movies`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
+          },
+    })
+     .then((res) => {
+        setMyArr([])
+        return res.json()
+     })
+     .then((res) => {
+       if (checked === false) {
+        setMyArr(res.data.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
+       } else {
+        setMyArr(res.data.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
        }
        setPreloader(false)
        setErrSearch(false)
@@ -143,8 +174,8 @@ function App() {
         })
   }
 
-  function handleDeleteClick(data) {
-    return fetch(`http://localhost:3001/movies/${data.id}`, {
+  function handleDeleteClick(id) {
+    return fetch(`http://localhost:3001/movies/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -190,6 +221,14 @@ function App() {
           />}/>
           <Route path='/saved-movies' element={<ProtectedRouteElement 
             element={SavedMovies}
+            search={search2}
+            clicked={clicked}
+            preloader={preloader}
+            errSearch={errSearch}
+            handleSaveClick={handleSaveClick}
+            handleDeleteClick={handleDeleteClick}
+            arr={arr}
+            myArr={myArr}
           />}/>
           <Route path='*' element={<Navigate to='/404' />} />
           </Routes>

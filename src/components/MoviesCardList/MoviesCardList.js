@@ -1,13 +1,13 @@
 import React from 'react';
 import '../../index.css'
 import MoviesCard from '../MoviesCard/MoviesCard';
-import cardImg from '../../images/card_img.png'
 import { useLocation } from 'react-router-dom';
 import Preloader from '../Preloader/Preloader';
 
-function MoviesCardList({arr, clicked, preloader, errSearch, handleSaveClick, handleDeleteClick}) {
+function MoviesCardList({arr, clicked, preloader, myArray, errSearch, handleSaveClick, handleDeleteClick}) {
     const [isSaved, setIsSaved] = React.useState(false)
     const [maxCards, setMaxCards] = React.useState(16)
+    const [myArr, setMyArr] = React.useState([])
     const [widthSize, setWidthSize] = React.useState(window.innerWidth)
     const [grade, setGrade] = React.useState(4)
     const [isSavedPage, setIsSavedPage] = React.useState(false)
@@ -19,9 +19,14 @@ function MoviesCardList({arr, clicked, preloader, errSearch, handleSaveClick, ha
     let location = useLocation()
 
     React.useEffect(() => {
+            setMyArr(myArray)
+    }, [myArray])
+
+    React.useEffect(() => {
         window.addEventListener('resize', () => {
             setWidthSize(window.innerWidth)
         })
+        
         if (widthSize > 1023 && widthSize < 1181) {
             setMaxCards(midWidth)
         } else if (widthSize > 767 && widthSize < 1024) {
@@ -31,11 +36,32 @@ function MoviesCardList({arr, clicked, preloader, errSearch, handleSaveClick, ha
         } else {
             setMaxCards(maxWidth)
         }
+
         if (location.pathname === '/saved-movies') {
             setIsSavedPage(true)
         } else if (location.pathname === '/movies') {
             setIsSavedPage(false)
         }
+
+        fetch(`http://localhost:3001/movies`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
+          },
+        })
+        .then((res) => {
+          if (res.ok) {
+            return res.json()
+          }
+          return Promise.reject(res)
+        })
+        .then((result) => {
+          setMyArr(result.data)
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }, [])
 
     React.useEffect(() => {
@@ -62,30 +88,65 @@ function MoviesCardList({arr, clicked, preloader, errSearch, handleSaveClick, ha
         setMaxCards(maxCards + grade)
     }
 
+
+    arr.forEach(element => {
+        if (myArr !== undefined) {
+            myArr.filter((film) => film.movieId === element.id ? element.lol = 12 : '')
+        }
+    });
+
+    function handleDeleteClickBtn(id) {
+        handleDeleteClick(id)
+        setMyArr(myArr.filter((film) => film.movieId !== id))
+    }
+
     return (
         <section className="movies-list">
             <div className="movies-list__container">
                 {
                     preloader
                     ? <Preloader /> 
-                    : arr.map((film) => {
+                    : !isSavedPage 
+                    ? arr.map((film) => {
                         count++
                         if (count <= maxCards) {
-                            return(
+                            return (
                                 <MoviesCard key={film.id} handleSaveClick={handleSaveClick} data={film} isSaved={isSaved} handleDeleteClick={handleDeleteClick} />
+                            )
+                        }
+                    }) 
+                    : myArr.map((film) => {
+                        count++
+                        if (count <= maxCards) {
+                            return (
+                                <MoviesCard key={film.movieId} handleSaveClick={handleSaveClick} data={film} isSaved={isSaved} handleDeleteClick={handleDeleteClickBtn} />
                             )
                         }
                     })
                 }
                 {
-                    !preloader && clicked && arr.length < 1 ? 
+                    location.pathname === '/movies' && !preloader && clicked && arr.length < 1? 
                     <div className='movies-list__nth'> 
                         {errSearch ? 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз' : 'Ничего не найдено'}
-                        </div> : []
+                    </div> : []
+                }
+                {
+                    location.pathname === '/saved-movies' && !preloader && clicked && myArr.length < 1 ? 
+                    <div className='movies-list__nth'> 
+                        {errSearch ? 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз' : 'Ничего не найдено'}
+                    </div> : []
                 }
             </div>
             {
-                !preloader && arr.length > maxCards
+                location.pathname === '/movies' && !preloader && arr.length > maxCards
+                ? 
+                <div className="movies-list__more">
+                    <button className='movies-list__more-btn' onClick={moreCards}> Ещё </button>
+                </div>
+                : []
+            }
+            {
+                location.pathname ==='/saved-movies' && !preloader && myArr.length > maxCards
                 ? 
                 <div className="movies-list__more">
                     <button className='movies-list__more-btn' onClick={moreCards}> Ещё </button>

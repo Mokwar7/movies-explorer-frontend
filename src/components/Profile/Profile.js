@@ -10,11 +10,8 @@ function Profile({exit}) {
     const [name, setName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [errorName, setErrorName] = React.useState('')
-    const [errorEmail, setErrorEmail] = React.useState('')
     const [nameDirty, setNameDirty] = React.useState(false)
-    const [emailDirty, setEmailDirty] = React.useState(false)
     const [formValid, setFormValid] = React.useState(false)
-    const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/    
     const err = ''
 
     React.useEffect(() => {
@@ -27,12 +24,12 @@ function Profile({exit}) {
     }, [])
 
     React.useEffect(() => {
-        if (errorEmail || errorName) {
+        if (errorName) {
             setFormValid(false)
         } else {
             setFormValid(true)
         }
-    }, [errorEmail, errorName])
+    }, [errorName])
 
     function setActive() {
         setIsActive(!isActive)
@@ -54,25 +51,8 @@ function Profile({exit}) {
         }
     }
 
-    function handleChangeEmail(e) {
-        setEmail(e.target.value)
-
-        if (!regexEmail.test(String(e.target.value).toLowerCase())) {
-            setErrorEmail('Некорректная почта')
-
-            if (!e.target.value) {
-                setErrorEmail('Почта не может быть пустой')
-            }
-        } else {
-            setErrorEmail('')
-        }
-    }
-
     const blurHandler = (e) => {
         switch (e.target.name) {
-            case 'email':
-                setEmailDirty(true)
-                break
             case 'name':
                 setNameDirty(true)
                 break
@@ -81,6 +61,28 @@ function Profile({exit}) {
 
     function handleSubmit(e) {
         e.preventDefault()
+        fetch(`http://localhost:3001/users/me`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
+          },
+          body: JSON.stringify({
+            'name': name,
+          })
+        })
+        .then((res) => {
+          if (res.ok) {
+            return res.json()
+          }
+          return Promise.reject(res)
+        })
+        .then((result) => {
+          setActive()
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     }
 
     return (
@@ -97,8 +99,7 @@ function Profile({exit}) {
                     </div>
                     <div className='profile__container'>
                         <p className='profile__type-info'>E-mail</p>
-                        {!isActive && <p className='profile__info'>{email}</p>}
-                        {isActive && <input className='profile__input' name='email' onBlur={blurHandler} value={email} onChange={handleChangeEmail} placeholder='pochta@yandex.ru'></input>}
+                        <p className='profile__info'>{email}</p>
                     </div>
                     {!isActive && <>
                     <button className='profile__edit-btn' onClick={setActive} type='button'>Редактировать</button>
@@ -106,7 +107,7 @@ function Profile({exit}) {
                     </>}
                     {isActive && <>
                     <span className='profile__err'>{err}</span>
-                    <button className='profile__save-btn' onClick={setActive} type='submit' disabled={!formValid}>Сохранить</button>
+                    <button className='profile__save-btn' type='submit' disabled={!formValid}>Сохранить</button>
                     </>}
                 </form>
             </section>

@@ -14,11 +14,25 @@ function MoviesCard({isSaved, handleSaveClick, data, handleDeleteClick}) {
         minutes = data.duration % 60
     }
 
+    React.useEffect(() => {
+      if (data.lol) {
+        setChecked(true)
+      }
+    }, [])
+    
+    function onLoading() {
+      console.log('a')
+    }
+
+    function handleDeleteClickBtn() {
+      handleDeleteClick(data.movieId)
+    }
+
     function handleSaveClickBtn() {
         if (!checked) {
             handleSaveClick(data)
         } else {
-            handleDeleteClick(data)
+            handleDeleteClick(data.id)
         }
         setChecked(!checked)
 
@@ -45,7 +59,7 @@ function MoviesCard({isSaved, handleSaveClick, data, handleDeleteClick}) {
 
     return (
         <div className="card">
-            <img src={'https://api.nomoreparties.co' + data.image.url} alt={'фотография ' + data.nameRU} className="card__img" />
+            <img src={data.image.url ? 'https://api.nomoreparties.co' + data.image.url : data.image} alt={'фотография ' + data.nameRU} className="card__img" />
             <div className="card__container">
                 <div className="card__container-about">
                     <h2 className="card__name">{data.nameRU}</h2>
@@ -53,12 +67,12 @@ function MoviesCard({isSaved, handleSaveClick, data, handleDeleteClick}) {
                 </div>
                 {!isSaved && 
                 <label className="card__label">
-                    <input className="card__checkbox" type='checkbox' onClick={handleSaveClickBtn}></input>
+                    <input className="card__checkbox" type='checkbox' checked={checked} onChange={onLoading} onClick={handleSaveClickBtn}></input>
                     <span className="card__span"></span>
                 </label>
                 }
                 {isSaved &&
-                    <img src={deleteImg} alt='значок удаления фильма из сохраненных' className='card__delete' />
+                    <img src={deleteImg} alt='значок удаления фильма из сохраненных' className='card__delete' onClick={handleDeleteClickBtn}/>
                 }
             </div>
         </div>

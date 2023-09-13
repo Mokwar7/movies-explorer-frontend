@@ -1,22 +1,33 @@
 import React from 'react';
 import '../../index.css'
 import searchIcon from '../../images/search_icon_gray.svg'
+import { useLocation } from 'react-router-dom';
 
 function SearchForm({search}) {
     const [checked, setChecked] = React.useState(true)
-    const [arr, setArr] = React.useState([])
     const [searchInput, setSearchInput] = React.useState('')
+    const [isSavedPage, setIsSavedPage] = React.useState(false)
+    let location = useLocation()
 
     React.useEffect(() => {
-        if (localStorage.getItem('searchInput') !== null && localStorage.getItem('isShort') !== null) {
-            if (localStorage.getItem('isShort') == 'false') {
+        if (location.pathname === '/saved-movies') {
+            setIsSavedPage(true)
+        } else if (location.pathname === '/movies') {
+            setIsSavedPage(false)
+        }
+
+        if (localStorage.getItem('searchInput') !== null && localStorage.getItem('isShort') !== null && location.pathname === '/movies') {
+            if (localStorage.getItem('isShort') === 'false') {
                 setChecked(false)
             } else {
                 setChecked(true)
             }
             setSearchInput(localStorage.getItem('searchInput'))
             search(localStorage.getItem('isShort'), localStorage.getItem('searchInput'))
-        }
+        } else {
+            setChecked(true)
+            setSearchInput('')
+        }        
     }, [])
 
     function handleSearch(e) {
@@ -42,7 +53,7 @@ function SearchForm({search}) {
                 <div className='search__container'>
                     <label className='search__label-input'>
                         <img className='search__icon' src={searchIcon} alt='значок поиска' />
-                        <input type='input' className='search__input' placeholder='Фильм' required minLength={1} onChange={handleSearch} value={searchInput}></input>
+                        <input type='input' className='search__input' placeholder='Фильм' onChange={handleSearch} value={searchInput}></input>
                     </label>
                     <div className='search__container-etc'>
                         <button className='search__button' type='submit'></button>
