@@ -13,7 +13,7 @@ function MoviesCardList({arr, clicked, preloader, myArray, errSearch, handleSave
     const [grade, setGrade] = React.useState(4)
     const [isSavedPage, setIsSavedPage] = React.useState(false)
     const mainApi = new MainApi({
-        url: 'http://localhost:3001/',
+        url: 'https://api.eivom.nomoreparties.co/',
         headers: {
             'Content-Type': 'application/json',
             "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''

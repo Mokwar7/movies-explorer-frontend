@@ -92,7 +92,7 @@ function Register () {
 
     function reg(evt) {
         evt.preventDefault()
-        return fetch('http://localhost:3001/signup', {
+        return fetch('https://api.eivom.nomoreparties.co/signup', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

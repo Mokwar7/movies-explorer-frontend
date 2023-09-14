@@ -22,7 +22,7 @@ function App() {
   const [preloader, setPreloader] = React.useState(false)
   const [errSearch, setErrSearch] = React.useState(false)
   const mainApi = new MainApi({
-    url: 'http://localhost:3001/',
+    url: 'https://api.eivom.nomoreparties.co/',
     headers: {
         'Content-Type': 'application/json',
         "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
@@ -121,7 +121,7 @@ function App() {
   }
 
   function handleSaveClick(data) {
-    return fetch('http://localhost:3001/movies', {
+    return fetch('https://api.eivom.nomoreparties.co/movies', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -153,7 +153,7 @@ function App() {
   }
 
   function handleDeleteClick(id) {
-    return fetch(`http://localhost:3001/movies/${id}`, {
+    return fetch(`https://api.eivom.nomoreparties.co/movies/${id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

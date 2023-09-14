@@ -70,7 +70,7 @@ function Login ({login}) {
 
     function log(e) {
         e.preventDefault()
-        return fetch('http://localhost:3001/signin', {
+        return fetch('https://api.eivom.nomoreparties.co/signin', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
