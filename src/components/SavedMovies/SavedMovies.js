@@ -6,6 +6,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 function SavedMovies({search, arr, myArr, clicked, preloader, errSearch, handleSaveClick, handleDeleteClick}) {
     React.useEffect(() => {
         document.title = 'Сохранённые фильмы'
+        localStorage.setItem('lastPage', '/saved-movies')
     }, [])
 
 

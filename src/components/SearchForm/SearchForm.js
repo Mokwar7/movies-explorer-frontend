@@ -4,7 +4,7 @@ import searchIcon from '../../images/search_icon_gray.svg'
 import { useLocation } from 'react-router-dom';
 
 function SearchForm({search}) {
-    const [checked, setChecked] = React.useState(true)
+    const [checked, setChecked] = React.useState(false)
     const [searchInput, setSearchInput] = React.useState('')
     const [isSavedPage, setIsSavedPage] = React.useState(false)
     let location = useLocation()

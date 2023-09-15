@@ -17,6 +17,10 @@ function Login ({login}) {
 
     React.useEffect(() => {
         document.title = 'Вход'
+        localStorage.setItem('lastPage', '/signin')
+        if (localStorage.getItem('logged') === 'true') {
+            nav('/', {replace: true})
+        }
     }, [])
 
     React.useEffect(() => {
@@ -70,6 +74,7 @@ function Login ({login}) {
 
     function log(e) {
         e.preventDefault()
+        setFormValid(false)
         return fetch('https://api.eivom.nomoreparties.co/signin', {
           method: 'POST',
           headers: {
@@ -89,7 +94,9 @@ function Login ({login}) {
         })
         .then((result) => {
           localStorage.setItem('jwt', result.token)
+          setFormValid(true)
           login()
+          nav('/', {replace: true})
         })
         .catch((err) => {
           setErrorRes('Неправильная почта или пароль')

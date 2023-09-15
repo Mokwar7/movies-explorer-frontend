@@ -3,7 +3,7 @@ import '../../index.css'
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-function Register () {
+function Register ({login}) {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [name, setName] = React.useState('')
@@ -20,6 +20,10 @@ function Register () {
 
     React.useEffect(() => {
         document.title = 'Регистрация'
+        localStorage.setItem('lastPage', '/signup')
+        if (localStorage.getItem('logged') === 'true') {
+            nav('/', {replace: true})
+        }
     }, [])
 
     React.useEffect(() => {
@@ -92,6 +96,7 @@ function Register () {
 
     function reg(evt) {
         evt.preventDefault()
+        setFormValid(false)
         return fetch('https://api.eivom.nomoreparties.co/signup', {
             method: 'POST',
             headers: {
@@ -110,8 +115,34 @@ function Register () {
             }
             return Promise.reject(res)
           })
-          .then((result) => {
-            nav('/signin', {replace: true})
+          .then(() => {
+            fetch('https://api.eivom.nomoreparties.co/signin', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
+              },
+              body: JSON.stringify({
+                  'password': password,
+                  'email': email,
+              })
+            })
+            .then((res) => {
+              if (res.ok) {
+                return res.json()
+              }
+              return Promise.reject(res)
+            })
+            .then((result) => {
+              localStorage.setItem('jwt', result.token)
+              login()
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            setFormValid(true)
+            nav('/movies', {replace: true})
+            console.log(localStorage.getItem('logged'))
           })
           .catch((err) => {
             if (err.status === 409) {

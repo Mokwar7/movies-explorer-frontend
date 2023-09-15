@@ -19,10 +19,10 @@ function MoviesCardList({arr, clicked, preloader, myArray, errSearch, handleSave
             "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
         }
     })
-    let maxWidth = 16
-    let midWidth = 12
-    let min2Width = 8
-    let minWidth = 5
+    const maxWidth = 16
+    const midWidth = 12
+    const min2Width = 8
+    const minWidth = 5
     let count = 0
     let location = useLocation()
 
@@ -30,10 +30,13 @@ function MoviesCardList({arr, clicked, preloader, myArray, errSearch, handleSave
             setMyArr(myArray)
     }, [myArray])
 
+    function setEventListener() {
+        setWidthSize(window.innerWidth)
+    }
+
     React.useEffect(() => {
-        window.addEventListener('resize', () => {
-            setWidthSize(window.innerWidth)
-        })
+        window.removeEventListener('resize', setEventListener)
+        window.addEventListener('resize', setEventListener)
         
         if (widthSize > 1023 && widthSize < 1181) {
             setMaxCards(midWidth)

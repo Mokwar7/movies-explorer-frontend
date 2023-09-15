@@ -21,6 +21,7 @@ function Profile({exit}) {
 
     React.useEffect(() => {
         document.title = 'Мой аккаунт'
+        localStorage.setItem('lastPage', '/profile')
     }, [])
 
     React.useEffect(() => {
@@ -61,7 +62,8 @@ function Profile({exit}) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        fetch(`http://localhost:3001/users/me`, {
+        setFormValid(false)
+        fetch(`https://api.eivom.nomoreparties.co/users/me`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json',
@@ -78,10 +80,12 @@ function Profile({exit}) {
           return Promise.reject(res)
         })
         .then((result) => {
-          setActive()
+            setFormValid(true)
+            setActive(false)
         })
         .catch((err) => {
-          console.log(err)
+            setFormValid(true)
+            console.log(err)
         })
     }
 

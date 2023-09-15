@@ -18,6 +18,8 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({})
   const [arr, setArr] = React.useState([])
   const [myArr, setMyArr] = React.useState([])
+  const [allArr, setAllArr] = React.useState([])
+  const [allMyArr, setAllMyArr] = React.useState([])
   const [clicked, setClicked] = React.useState(false)
   const [preloader, setPreloader] = React.useState(false)
   const [errSearch, setErrSearch] = React.useState(false)
@@ -57,7 +59,6 @@ function App() {
         .then((data) => {
           setCurrentUser(data.data)
           localStorage.setItem('logged', true)
-          nav('/', {replace: true})
         })
         .catch((err) => {
           console.log(err)
@@ -70,6 +71,15 @@ function App() {
     localStorage.setItem('isShort', checked)
     setClicked(true)
     setPreloader(true)
+    if (arr.length > 0) {
+      if (checked === false) {
+        setArr(allArr.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
+      } else {
+        setArr(allArr.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
+      }
+      setPreloader(false)
+      setErrSearch(false)
+    } else {
     fetch('https://api.nomoreparties.co/beatfilm-movies', {
      method: 'GET',
      headers: {
@@ -82,9 +92,11 @@ function App() {
      })
      .then((res) => {
        if (checked === false) {
-           setArr(res.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
+          setAllArr(res)
+          setArr(res.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
        } else {
-           setArr(res.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
+          setAllArr(res)
+          setArr(res.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
        }
        setPreloader(false)
        setErrSearch(false)
@@ -93,12 +105,21 @@ function App() {
       console.log(err)
       setPreloader(false)
       setErrSearch(true)
-    })
+    })}
   }
 
   function search2(checked, searchInput) {
     setClicked(true)
     setPreloader(true)
+    if (myArr.length > 0) {
+      if (checked === false) {
+        setMyArr(allMyArr.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
+      } else {
+        setMyArr(allMyArr.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
+      }
+      setPreloader(false)
+      setErrSearch(false)
+    } else {
     mainApi.getMovies()
       .then((result) => {
         setMyArr([])
@@ -106,8 +127,10 @@ function App() {
       })
       .then((res) => {
        if (checked === false) {
+        setAllMyArr(res.data)
         setMyArr(res.data.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
        } else {
+        setAllMyArr(res.data)
         setMyArr(res.data.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
        }
        setPreloader(false)
@@ -117,7 +140,7 @@ function App() {
       console.log(err)
       setPreloader(false)
       setErrSearch(true)
-    })
+    })}
   }
 
   function handleSaveClick(data) {
@@ -176,7 +199,7 @@ function App() {
       <div className="App">
         <Header />
         <Routes>
-          <Route path='/signup' element={<Register />} />
+          <Route path='/signup' element={<Register login={login} />} />
           <Route path='/signin' element={<Login login={login} />} />
           <Route path='/404' element={<ErrorPage />} />
           <Route path='/' element={<Main />} />
