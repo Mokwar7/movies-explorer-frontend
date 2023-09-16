@@ -89,6 +89,7 @@ function Profile({exit}) {
           return Promise.reject(res)
         })
         .then((result) => {
+            user.name = result.data.name
             setFormValid(true)
             setActive(false)
             setSaveButtonText('Сохранить')
