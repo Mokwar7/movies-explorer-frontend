@@ -11,6 +11,7 @@
     font-size: 24px;
     font-weight: 500;
     margin: 0 0 123px;
+    text-align: center;
 }
 
 .profile__container {
@@ -65,7 +66,6 @@
     padding: 0;
     margin-bottom: 16px;
     transition: 0.3s ease-in-out;
-    margin-top: 220px;
 }
 
 .profile__edit-btn:hover {
@@ -123,18 +123,18 @@
     text-align: center;
 }
 
+.profile__save {
+    color: #3456F3;
+}
+
 @media screen and (max-width: 1023px) {
     .profile {
         padding-top: 236px;
-        max-height: 500px;
+        max-height: 450px;
     }
 
     .profile__header {
         margin-bottom: 96px;
-    }
-
-    .profile__edit-btn {
-        margin-top: 210px;
     }
 
     .profile__err {
@@ -157,7 +157,6 @@
     }
 
     .profile__edit-btn {
-        margin-top: 379px;
         font-size: 12px;
     }
 

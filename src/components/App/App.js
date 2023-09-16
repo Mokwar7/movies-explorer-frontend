@@ -16,13 +16,14 @@ import MainApi from '../../utils/MainApi';
 
 function App() {
   const [currentUser, setCurrentUser] = React.useState({})
-  const [arr, setArr] = React.useState([])
-  const [myArr, setMyArr] = React.useState([])
-  const [allArr, setAllArr] = React.useState([])
-  const [allMyArr, setAllMyArr] = React.useState([])
+  const [myMoviesArr, setMyMoviesArr] = React.useState([])
+  const [moviesArr, setMoviesArr] = React.useState([])
+  const [myAllMoviesArr, setMyAllMoviesArr] = React.useState([])
+  const [moviesAllArr, setMoviesAllArr] = React.useState([])
   const [clicked, setClicked] = React.useState(false)
   const [preloader, setPreloader] = React.useState(false)
   const [errSearch, setErrSearch] = React.useState(false)
+  const [widthSize, setWidthSize] = React.useState(window.innerWidth)
   const mainApi = new MainApi({
     url: 'https://api.eivom.nomoreparties.co/',
     headers: {
@@ -43,6 +44,9 @@ function App() {
           console.log(err)
           localStorage.removeItem('logged')
         })
+      window.addEventListener('resize', () => {
+        setWidthSize(window.innerWidth)
+      })
     }
   }, [])
 
@@ -59,88 +63,12 @@ function App() {
         .then((data) => {
           setCurrentUser(data.data)
           localStorage.setItem('logged', true)
+          nav('/movies', {replace: true})
         })
         .catch((err) => {
           console.log(err)
           localStorage.removeItem('logged')
         })
-  }
-
-  function search(checked, searchInput) {
-    localStorage.setItem('searchInput', searchInput)
-    localStorage.setItem('isShort', checked)
-    setClicked(true)
-    setPreloader(true)
-    if (arr.length > 0) {
-      if (checked === false) {
-        setArr(allArr.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
-      } else {
-        setArr(allArr.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
-      }
-      setPreloader(false)
-      setErrSearch(false)
-    } else {
-    fetch('https://api.nomoreparties.co/beatfilm-movies', {
-     method: 'GET',
-     headers: {
-       "Content-Type": "application/json"
-     },
-   })
-     .then((res) => {
-       setArr([])
-       return res.json()
-     })
-     .then((res) => {
-       if (checked === false) {
-          setAllArr(res)
-          setArr(res.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
-       } else {
-          setAllArr(res)
-          setArr(res.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
-       }
-       setPreloader(false)
-       setErrSearch(false)
-     })
-     .catch((err) => {
-      console.log(err)
-      setPreloader(false)
-      setErrSearch(true)
-    })}
-  }
-
-  function search2(checked, searchInput) {
-    setClicked(true)
-    setPreloader(true)
-    if (myArr.length > 0) {
-      if (checked === false) {
-        setMyArr(allMyArr.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
-      } else {
-        setMyArr(allMyArr.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
-      }
-      setPreloader(false)
-      setErrSearch(false)
-    } else {
-    mainApi.getMovies()
-      .then((result) => {
-        setMyArr([])
-        return result
-      })
-      .then((res) => {
-       if (checked === false) {
-        setAllMyArr(res.data)
-        setMyArr(res.data.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
-       } else {
-        setAllMyArr(res.data)
-        setMyArr(res.data.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
-       }
-       setPreloader(false)
-       setErrSearch(false)
-      })
-     .catch((err) => {
-      console.log(err)
-      setPreloader(false)
-      setErrSearch(true)
-    })}
   }
 
   function handleSaveClick(data) {
@@ -185,6 +113,8 @@ function App() {
         })
         .then((res) => {
           if (res.ok) {
+            setMyMoviesArr(myMoviesArr.filter((film) => film.movieId !== id))
+            setMyAllMoviesArr(myMoviesArr.filter((film) => film.movieId !== id))
             return res.json()
           }
           return Promise.reject(res)
@@ -192,6 +122,102 @@ function App() {
         .catch((err) => {
           console.log(err)
         })
+  }
+
+  function handleSearchMovies(checked, searchInput) {
+    localStorage.setItem('searchInput', searchInput)
+    localStorage.setItem('isShort', checked)
+    setClicked(searchInput)
+    setPreloader(true)
+
+    if (checked === false) {
+      setMoviesArr(moviesAllArr.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
+    } else {
+      setMoviesArr(moviesAllArr.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
+    }
+
+    setPreloader(false)
+    setErrSearch(false)
+  }
+
+  function handleSearchSavedMovies(checked, searchInput) {
+    setClicked(searchInput)
+    setPreloader(true)
+
+    if (myAllMoviesArr.length > 0) {
+      if (checked === false) {
+        setMyMoviesArr(myAllMoviesArr.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
+      } else {
+        setMyMoviesArr(myAllMoviesArr.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
+      }
+    }
+
+    setPreloader(false)
+  }
+
+  function onLoadSavedMoviesSearch() {
+    setPreloader(true)
+
+    mainApi.getMovies()
+      .then((result) => {
+        return result
+      })
+      .then((res) => {
+        setMyAllMoviesArr(res.data)
+        setMyMoviesArr(res.data.filter((film) => film.duration > 40))
+        setPreloader(false)
+        setErrSearch(false)
+      })
+      .catch((err) => {
+      console.log(err)
+      setPreloader(false)
+      setErrSearch(true)
+      })
+  }
+
+  function onLoadMoviesSearch() {
+    const searchInput = localStorage.getItem('searchInput') === null ? '' : localStorage.getItem('searchInput')
+    const isShort = localStorage.getItem('isShort') === null ? 'false' : localStorage.getItem('isShort')
+    setPreloader(true)
+    setMoviesArr([])
+    setMoviesAllArr([])
+
+    fetch('https://api.nomoreparties.co/beatfilm-movies', {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+      .then((res) => {
+        return res.json()
+      })
+      .then((res) => {
+        mainApi.getMovies()
+          .then((result) => {
+            res.forEach(element => {
+              if (result.data !== undefined) {
+                result.data.filter((film) => film.movieId === element.id ? element.lol = 12 : '')
+              }
+            });
+            setMoviesAllArr(res)
+            if (isShort === 'false') {
+              res = res.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
+            } else if (isShort === 'true') {
+              res = res.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))
+            }
+            setMoviesArr(res)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+        setPreloader(false)
+        setErrSearch(false)
+      })
+      .catch((err) => {
+       console.log(err)
+       setPreloader(false)
+       setErrSearch(true)
+      })
   }
 
   return (
@@ -209,24 +235,27 @@ function App() {
           />}/>
           <Route path='/movies' element={<ProtectedRouteElement 
             element={Movies}
-            search={search}
+            onLoadMoviesSearch={onLoadMoviesSearch}
+            search={handleSearchMovies}
             clicked={clicked}
             preloader={preloader}
             errSearch={errSearch}
             handleSaveClick={handleSaveClick}
             handleDeleteClick={handleDeleteClick}
-            arr={arr}
+            arr={moviesArr}
+            widthSize={widthSize}
           />}/>
           <Route path='/saved-movies' element={<ProtectedRouteElement 
             element={SavedMovies}
-            search={search2}
+            search={handleSearchSavedMovies}
+            onLoadSavedMoviesSearch={onLoadSavedMoviesSearch}
             clicked={clicked}
             preloader={preloader}
             errSearch={errSearch}
             handleSaveClick={handleSaveClick}
             handleDeleteClick={handleDeleteClick}
-            arr={arr}
-            myArr={myArr}
+            arr={myMoviesArr}
+            widthSize={widthSize}
           />}/>
           <Route path='*' element={<Navigate to='/404' />} />
           </Routes>

@@ -9,7 +9,7 @@ function MoviesCard({isSaved, handleSaveClick, data, handleDeleteClick}) {
     const [hours ,setHours] = React.useState(0)
 
     React.useEffect(() => {
-      if (data.lol) {
+      if (data.lol === 12) {
         setChecked(true)
       }
       if (data.duration < 60) {

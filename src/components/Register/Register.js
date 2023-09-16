@@ -32,7 +32,7 @@ function Register ({login}) {
         } else {
             setFormValid(true)
         }
-    }, [errorEmail, errorPassword, errorName])
+    }, [errorEmail, errorPassword, errorName, email])
 
     function handleChangeName (e) {
         setName(e.target.value)
@@ -134,23 +134,23 @@ function Register ({login}) {
               return Promise.reject(res)
             })
             .then((result) => {
+                console.log('a')
               localStorage.setItem('jwt', result.token)
               login()
             })
             .catch((err) => {
                 console.log(err)
+                setFormValid(false)
             })
             setFormValid(true)
-            nav('/movies', {replace: true})
-            console.log(localStorage.getItem('logged'))
           })
           .catch((err) => {
             if (err.status === 409) {
                 setErrorRes('Данная почта уже зарегистрирована.')
-                setFormValid(false)
             } else {
                 setErrorRes('Что-то пошло не так.')
             }
+            setFormValid(false)
         })
     }
 

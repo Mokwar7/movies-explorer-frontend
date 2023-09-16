@@ -96,7 +96,6 @@ function Login ({login}) {
           localStorage.setItem('jwt', result.token)
           setFormValid(true)
           login()
-          nav('/', {replace: true})
         })
         .catch((err) => {
           setErrorRes('Неправильная почта или пароль')

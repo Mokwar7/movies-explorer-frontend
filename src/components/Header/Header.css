@@ -120,10 +120,6 @@
     margin: 0;
 }
 
-.header__container-nav_main {
-    background-color: #DDDEE3;
-}
-
 .header__container-nav_active {
     visibility: visible;
     opacity: 1;

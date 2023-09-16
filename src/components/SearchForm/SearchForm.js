@@ -3,31 +3,25 @@ import '../../index.css'
 import searchIcon from '../../images/search_icon_gray.svg'
 import { useLocation } from 'react-router-dom';
 
-function SearchForm({search}) {
+function SearchForm({search, onLoadSearch}) {
     const [checked, setChecked] = React.useState(false)
     const [searchInput, setSearchInput] = React.useState('')
-    const [isSavedPage, setIsSavedPage] = React.useState(false)
     let location = useLocation()
 
     React.useEffect(() => {
-        if (location.pathname === '/saved-movies') {
-            setIsSavedPage(true)
-        } else if (location.pathname === '/movies') {
-            setIsSavedPage(false)
-        }
-
-        if (localStorage.getItem('searchInput') !== null && localStorage.getItem('isShort') !== null && location.pathname === '/movies') {
-            if (localStorage.getItem('isShort') === 'false') {
+        if (location.pathname === '/movies') {
+            if (localStorage.getItem('isShort') === 'false' || localStorage.getItem('isShort') === null) {
                 setChecked(false)
             } else {
                 setChecked(true)
             }
-            setSearchInput(localStorage.getItem('searchInput'))
-            search(localStorage.getItem('isShort'), localStorage.getItem('searchInput'))
+            setSearchInput(localStorage.getItem('searchInput') === null ? '' : localStorage.getItem('searchInput'))
+            onLoadSearch()
         } else {
-            setChecked(true)
+            setChecked(false)
             setSearchInput('')
-        }        
+            onLoadSearch()
+        }
     }, [])
 
     function handleSearch(e) {
@@ -35,11 +29,12 @@ function SearchForm({search}) {
     }
 
     function handleCheck() {
-        setChecked(!checked)
+        
     }
 
     function handleCheckClick() {
-        handleCheck()
+        search(!checked, searchInput)
+        setChecked(!checked)
     }
 
     function handleSubmit(e) {

@@ -12,6 +12,8 @@ function Profile({exit}) {
     const [errorName, setErrorName] = React.useState('')
     const [nameDirty, setNameDirty] = React.useState(false)
     const [formValid, setFormValid] = React.useState(false)
+    const [saveButtonText, setSaveButtonText] = React.useState('Сохранить')
+    const [saveSuccesText, setSuccesButtonText] = React.useState('')
     const err = ''
 
     React.useEffect(() => {
@@ -34,6 +36,9 @@ function Profile({exit}) {
 
     function setActive() {
         setIsActive(!isActive)
+        if (!isActive === true) {
+            setErrorName(' ')
+        }
     }
 
     function handleChangeName(e) {
@@ -47,6 +52,8 @@ function Profile({exit}) {
             }
         } else if (e.target.value.length > 30) {
             setErrorName('Имя должно быть короче 30 символов')
+        } else if (e.target.value === user.name) {
+            setErrorName(' ')
         } else {
             setErrorName('')
         }
@@ -63,6 +70,8 @@ function Profile({exit}) {
     function handleSubmit(e) {
         e.preventDefault()
         setFormValid(false)
+        setSuccesButtonText('')
+        setSaveButtonText('Идет сохранение...')
         fetch(`https://api.eivom.nomoreparties.co/users/me`, {
           method: 'PATCH',
           headers: {
@@ -82,6 +91,8 @@ function Profile({exit}) {
         .then((result) => {
             setFormValid(true)
             setActive(false)
+            setSaveButtonText('Сохранить')
+            setSuccesButtonText('Профиль успешно изменен')
         })
         .catch((err) => {
             setFormValid(true)
@@ -106,12 +117,13 @@ function Profile({exit}) {
                         <p className='profile__info'>{email}</p>
                     </div>
                     {!isActive && <>
+                    <span className='profile__err profile__save'>{saveSuccesText}</span>
                     <button className='profile__edit-btn' onClick={setActive} type='button'>Редактировать</button>
                     <NavLink className='profile__exit-btn' to='/' onClick={exit}>Выйти из аккаунта</NavLink>
                     </>}
                     {isActive && <>
                     <span className='profile__err'>{err}</span>
-                    <button className='profile__save-btn' type='submit' disabled={!formValid}>Сохранить</button>
+                    <button className='profile__save-btn' type='submit' disabled={!formValid}>{saveButtonText}</button>
                     </>}
                 </form>
             </section>
