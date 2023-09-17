@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom';
 function SearchForm({search, onLoadSearch}) {
     const [checked, setChecked] = React.useState(false)
     const [searchInput, setSearchInput] = React.useState('')
+    const [firstSearch ,setFirstSearch] = React.useState(false)
     let location = useLocation()
 
     React.useEffect(() => {
@@ -15,8 +16,11 @@ function SearchForm({search, onLoadSearch}) {
             } else {
                 setChecked(true)
             }
-            setSearchInput(localStorage.getItem('searchInput') === null ? '' : localStorage.getItem('searchInput'))
-            onLoadSearch()
+            if (localStorage.getItem('isShort') !== null && localStorage.getItem('searchInput') !== 'null' && localStorage.getItem('searchInput') !== '') {
+                setSearchInput(localStorage.getItem('searchInput'))
+                onLoadSearch()
+                setFirstSearch(true)
+            }
         } else {
             setChecked(false)
             setSearchInput('')
@@ -33,13 +37,31 @@ function SearchForm({search, onLoadSearch}) {
     }
 
     function handleCheckClick() {
-        search(!checked, searchInput)
+        if (location.pathname === '/movies') {
+            if (!firstSearch) {
+                onLoadSearch(!checked, searchInput)
+                setFirstSearch(true)
+            } else {
+                search(!checked, searchInput)
+            }
+        } else {
+            search(!checked, searchInput)
+        }
         setChecked(!checked)
     }
 
     function handleSubmit(e) {
         e.preventDefault()
-        search(checked, searchInput)
+        if (location.pathname === '/movies') {
+            if (!firstSearch) {
+                onLoadSearch(checked, searchInput)
+                setFirstSearch(true)
+            } else {
+                search(checked, searchInput)
+            }
+        } else {
+            search(checked, searchInput)
+        }
     }
 
     return (

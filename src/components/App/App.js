@@ -125,15 +125,15 @@ function App() {
   }
 
   function handleSearchMovies(checked, searchInput) {
-    localStorage.setItem('searchInput', searchInput)
+    localStorage.setItem('searchInput', (searchInput === '' ? null : searchInput))
     localStorage.setItem('isShort', checked)
-    setClicked(searchInput)
+    setClicked(searchInput + checked)
     setPreloader(true)
 
     if (checked === false) {
-      setMoviesArr(moviesAllArr.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
-    } else {
       setMoviesArr(moviesAllArr.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
+    } else {
+      setMoviesArr(moviesAllArr.filter((film) => film.duration <= 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
     }
 
     setPreloader(false)
@@ -141,14 +141,14 @@ function App() {
   }
 
   function handleSearchSavedMovies(checked, searchInput) {
-    setClicked(searchInput)
+    setClicked(searchInput + checked)
     setPreloader(true)
 
     if (myAllMoviesArr.length > 0) {
       if (checked === false) {
-        setMyMoviesArr(myAllMoviesArr.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
-      } else {
         setMyMoviesArr(myAllMoviesArr.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
+      } else {
+        setMyMoviesArr(myAllMoviesArr.filter((film) => film.duration <= 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))))
       }
     }
 
@@ -164,7 +164,7 @@ function App() {
       })
       .then((res) => {
         setMyAllMoviesArr(res.data)
-        setMyMoviesArr(res.data.filter((film) => film.duration > 40))
+        setMyMoviesArr(res.data)
         setPreloader(false)
         setErrSearch(false)
       })
@@ -175,9 +175,11 @@ function App() {
       })
   }
 
-  function onLoadMoviesSearch() {
-    const searchInput = localStorage.getItem('searchInput') === null ? '' : localStorage.getItem('searchInput')
-    const isShort = localStorage.getItem('isShort') === null ? 'false' : localStorage.getItem('isShort')
+  function onLoadMoviesSearch(checked, searchInp) {
+    const searchInput = checked === undefined ? localStorage.getItem('searchInput') : searchInp
+    const isShort = searchInp === undefined ? localStorage.getItem('isShort') : checked
+    localStorage.setItem('searchInput', searchInput)
+    localStorage.setItem('isShort', isShort)
     setPreloader(true)
     setMoviesArr([])
     setMoviesAllArr([])
@@ -200,10 +202,10 @@ function App() {
               }
             });
             setMoviesAllArr(res)
-            if (isShort === 'false') {
-              res = res.filter((film) => film.duration > 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
-            } else if (isShort === 'true') {
+            if (isShort === 'false' || isShort === false) {
               res = res.filter((film) => film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase()))
+            } else if (isShort === 'true' || isShort === true) {
+              res = res.filter((film) => film.duration <= 40 && (film.nameEN.toLowerCase().includes(searchInput.toLowerCase()) || film.nameRU.toLowerCase().includes(searchInput.toLowerCase())))
             }
             setMoviesArr(res)
           })
