@@ -36,8 +36,6 @@ function MoviesCardList({arr, clicked, preloader, errSearch, handleSaveClick, ha
         } else {
             setGrade(4)
         }
-        console.log(grade)
-        console.log(window.innerWidth)
     }, [widthSize])
 
     React.useEffect(() => {
