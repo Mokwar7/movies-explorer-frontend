@@ -17,11 +17,11 @@ function MoviesCardList({arr, clicked, preloader, errSearch, handleSaveClick, ha
     let location = useLocation()
 
     React.useEffect(() => {        
-        if (widthSize > 1023 && widthSize < 1181) {
+        if (window.innerWidth >= 1023 && window.innerWidth < 1181) {
             setMaxCards(midWidth)
-        } else if (widthSize > 767 && widthSize < 1024) {
+        } else if (window.innerWidth >= 767 && window.innerWidth < 1023) {
             setMaxCards(min2Width)
-        } else if (widthSize < 768) {
+        } else if (window.innerWidth < 767) {
             setMaxCards(minWidth)
         } else {
             setMaxCards(maxWidth)
@@ -29,13 +29,15 @@ function MoviesCardList({arr, clicked, preloader, errSearch, handleSaveClick, ha
     }, [clicked])
 
     React.useEffect(() => {
-        if (widthSize > 1023 && widthSize < 1181) {
+        if (window.innerWidth >= 1023 && window.innerWidth < 1181) {
             setGrade(3)
-        } else if (widthSize < 1024) {
+        } else if (window.innerWidth < 1023) {
             setGrade(2)
         } else {
             setGrade(4)
         }
+        console.log(grade)
+        console.log(window.innerWidth)
     }, [widthSize])
 
     React.useEffect(() => {
