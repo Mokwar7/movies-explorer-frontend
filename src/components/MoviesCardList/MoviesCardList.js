@@ -16,6 +16,22 @@ function MoviesCardList({arr, clicked, preloader, errSearch, handleSaveClick, ha
     let count = 0
     let location = useLocation()
 
+    React.useEffect(() => {
+        if (window.innerWidth > 1023 && window.innerWidth < 1181) {
+            setMaxCards(midWidth)
+            setGrade(3)
+        } else if (window.innerWidth >= 767 && window.innerWidth <= 1023) {
+            setMaxCards(min2Width)
+            setGrade(2)
+        } else if (window.innerWidth < 767) {
+            setMaxCards(minWidth)
+            setGrade(2)
+        } else {
+            setMaxCards(maxWidth)
+            setGrade(4)
+        }
+    }, [])
+
     React.useEffect(() => {        
         if (window.innerWidth > 1023 && window.innerWidth < 1181) {
             setMaxCards(midWidth)

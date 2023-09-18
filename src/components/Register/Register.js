@@ -134,7 +134,6 @@ function Register ({login}) {
               return Promise.reject(res)
             })
             .then((result) => {
-                console.log('a')
               localStorage.setItem('jwt', result.token)
               login()
             })
