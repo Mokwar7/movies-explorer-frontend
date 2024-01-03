@@ -3,6 +3,8 @@ import '../../index.css'
 import React from 'react';
 
 function ErrorPage() {
+    let lastPage = localStorage.getItem('lastPage')
+
     React.useEffect(() => {
         document.title = 'Страница не найдена'
     }, [])
@@ -12,7 +14,7 @@ function ErrorPage() {
             <section className='error'>
                 <h1 className='error__code'>404</h1>
                 <p className='error__text'>Страница не найдена</p>
-                <NavLink to='/' className='error__link'>Назад</NavLink>
+                <NavLink to={lastPage} className='error__link'>Назад</NavLink>
             </section>
         </main>
     )

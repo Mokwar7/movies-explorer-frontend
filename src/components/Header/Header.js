@@ -4,7 +4,6 @@ import React from 'react';
 import man from '../../images/icon man header.svg'
 
 function Header() {
-    const [isLogged, setIsLogged] = React.useState(true)
     const [isActive, setIsActive] = React.useState(false)
     const [isMain, setIsMain] = React.useState(false)
     const [isHidden, setIsHidden] = React.useState(false)
@@ -21,7 +20,6 @@ function Header() {
             setIsHidden(false)
             setIsMain(false)
         }
-        
     }, [location])
 
     function change() {
@@ -34,7 +32,7 @@ function Header() {
         <header className={'header' + (isMain ? ' header_main' : '')}>
             <div className='header__container'>
                 <NavLink to='/' className='header__logo'></NavLink>
-                {isLogged && <>
+                {localStorage.getItem('logged') && <>
                 <div className={'header__container-burger' + (isActive ? ' header__container-burger_active' : '')} onClick={change}>
                     <span className={'header__burger' + (isActive ? ' header__burger_active' : '')}></span>
                 </div>
@@ -51,7 +49,7 @@ function Header() {
                 </menu>
                 <div className={'header__cover' + (isActive ? ' header__cover_active' : '')} onClick={change}></div>
                 </>}
-                {!isLogged &&
+                {!localStorage.getItem('logged') &&
                 <nav className='header__container-auth'>
                     <NavLink to='/signup' className='header__register hover_link'>Регистрация</NavLink>
                     <NavLink to='/signin' className='header__login'>Войти</NavLink>

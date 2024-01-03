@@ -10,6 +10,7 @@ import Portfolio from '../Portfolio/Portfolio';
 function Main() {
     React.useEffect(() => {
         document.title = 'Главная'
+        localStorage.setItem('lastPage', '/')
     }, [])
 
     return (

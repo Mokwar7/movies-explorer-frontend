@@ -28,6 +28,11 @@
     margin: 0;
     font-size: 13px;
     font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 206px;
+    height: 16px;
 }
 
 .card__time {

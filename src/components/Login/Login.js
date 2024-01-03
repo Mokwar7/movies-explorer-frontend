@@ -1,9 +1,9 @@
 /* eslint-disable default-case */
 import '../../index.css'
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
-function Login () {
+function Login ({login}) {
     const [email, setEmail] = React.useState('')
     const [password, setPassword] = React.useState('')
     const [errorPassword, setErrorPassword] = React.useState('Пароль не может быть пустым')
@@ -11,10 +11,16 @@ function Login () {
     const [emailDirty, setEmailDirty] = React.useState(false)
     const [passwordDirty, setPasswordDirty] = React.useState(false)
     const [formValid, setFormValid] = React.useState(false)
+    const [errorRes, setErrorRes] = React.useState('')
+    let nav = useNavigate()
     const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
     React.useEffect(() => {
         document.title = 'Вход'
+        localStorage.setItem('lastPage', '/signin')
+        if (localStorage.getItem('logged') === 'true') {
+            nav('/', {replace: true})
+        }
     }, [])
 
     React.useEffect(() => {
@@ -66,13 +72,44 @@ function Login () {
        }
     }
 
+    function log(e) {
+        e.preventDefault()
+        setFormValid(false)
+        return fetch('https://api.eivom.nomoreparties.co/signin', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
+          },
+          body: JSON.stringify({
+              'password': password,
+              'email': email,
+          })
+        })
+        .then((res) => {
+          if (res.ok) {
+            return res.json()
+          }
+          return Promise.reject(res)
+        })
+        .then((result) => {
+          localStorage.setItem('jwt', result.token)
+          setFormValid(true)
+          login()
+        })
+        .catch((err) => {
+          setErrorRes('Неправильная почта или пароль')
+          setFormValid(false)
+        })
+      }
+
     return (
         <main>
             <section className='reg'>
                 <div className='reg__container'>
                     <NavLink to='/' className='header__logo reg__logo'></NavLink>
                     <h3 className='reg__header'>Рады видеть!</h3>
-                    <form className='reg__form'>
+                    <form className='reg__form' onSubmit={log}>
                         <div className='reg__container-label'>
                             <label className='reg__label'>
                                 <p className='reg__text'>E-mail</p>
@@ -86,6 +123,7 @@ function Login () {
                             </label>
                         </div>
                         <div className='reg__container-btn'>
+                            <span className='profile__err reg__err'>{errorRes}</span>
                             <button type='submit' className='reg__button' disabled={!formValid}>Войти</button>
                             <p className='reg__suggest'>
                                 Ещё не зарегистрированы?

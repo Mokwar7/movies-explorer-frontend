@@ -1,34 +1,44 @@
+/* eslint-disable default-case */
 import { NavLink } from 'react-router-dom';
 import '../../index.css'
 import React from 'react'
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Profile() {
+function Profile({exit}) {
     const [isActive, setIsActive] = React.useState(false);
-    //Подставил данные вместо БД
-    const [name, setName] = React.useState('Олег');
-    const [email, setEmail] = React.useState('pochta@yandex.ru');
+    const user = React.useContext(CurrentUserContext)
+    const [name, setName] = React.useState('');
+    const [email, setEmail] = React.useState('');
     const [errorName, setErrorName] = React.useState('')
-    const [errorEmail, setErrorEmail] = React.useState('')
     const [nameDirty, setNameDirty] = React.useState(false)
-    const [emailDirty, setEmailDirty] = React.useState(false)
     const [formValid, setFormValid] = React.useState(false)
-    const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/    
+    const [saveButtonText, setSaveButtonText] = React.useState('Сохранить')
+    const [saveSuccesText, setSuccesButtonText] = React.useState('')
     const err = ''
 
     React.useEffect(() => {
-        document.title = 'Аккаунт'
+        setName(user.name)
+        setEmail(user.email)
+    }, [user])
+
+    React.useEffect(() => {
+        document.title = 'Мой аккаунт'
+        localStorage.setItem('lastPage', '/profile')
     }, [])
 
     React.useEffect(() => {
-        if (errorEmail || errorName) {
+        if (errorName) {
             setFormValid(false)
         } else {
             setFormValid(true)
         }
-    }, [errorEmail, errorName])
+    }, [errorName])
 
     function setActive() {
         setIsActive(!isActive)
+        if (!isActive === true) {
+            setErrorName(' ')
+        }
     }
 
     function handleChangeName(e) {
@@ -42,30 +52,15 @@ function Profile() {
             }
         } else if (e.target.value.length > 30) {
             setErrorName('Имя должно быть короче 30 символов')
+        } else if (e.target.value === user.name) {
+            setErrorName(' ')
         } else {
             setErrorName('')
         }
     }
 
-    function handleChangeEmail(e) {
-        setEmail(e.target.value)
-
-        if (!regexEmail.test(String(e.target.value).toLowerCase())) {
-            setErrorEmail('Некорректная почта')
-
-            if (!e.target.value) {
-                setErrorEmail('Почта не может быть пустой')
-            }
-        } else {
-            setErrorEmail('')
-        }
-    }
-
     const blurHandler = (e) => {
         switch (e.target.name) {
-            case 'email':
-                setEmailDirty(true)
-                break
             case 'name':
                 setNameDirty(true)
                 break
@@ -74,6 +69,36 @@ function Profile() {
 
     function handleSubmit(e) {
         e.preventDefault()
+        setFormValid(false)
+        setSuccesButtonText('')
+        setSaveButtonText('Идет сохранение...')
+        fetch(`https://api.eivom.nomoreparties.co/users/me`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization" : localStorage.getItem('jwt') ? localStorage.getItem('jwt') : ''
+          },
+          body: JSON.stringify({
+            'name': name,
+          })
+        })
+        .then((res) => {
+          if (res.ok) {
+            return res.json()
+          }
+          return Promise.reject(res)
+        })
+        .then((result) => {
+            user.name = result.data.name
+            setFormValid(true)
+            setActive(false)
+            setSaveButtonText('Сохранить')
+            setSuccesButtonText('Профиль успешно изменен')
+        })
+        .catch((err) => {
+            setFormValid(true)
+            console.log(err)
+        })
     }
 
     return (
@@ -90,16 +115,16 @@ function Profile() {
                     </div>
                     <div className='profile__container'>
                         <p className='profile__type-info'>E-mail</p>
-                        {!isActive && <p className='profile__info'>{email}</p>}
-                        {isActive && <input className='profile__input' name='email' onBlur={blurHandler} value={email} onChange={handleChangeEmail} placeholder='pochta@yandex.ru'></input>}
+                        <p className='profile__info'>{email}</p>
                     </div>
                     {!isActive && <>
+                    <span className='profile__err profile__save'>{saveSuccesText}</span>
                     <button className='profile__edit-btn' onClick={setActive} type='button'>Редактировать</button>
-                    <NavLink className='profile__exit-btn' to='/'>Выйти из аккаунта</NavLink>
+                    <NavLink className='profile__exit-btn' to='/' onClick={exit}>Выйти из аккаунта</NavLink>
                     </>}
                     {isActive && <>
                     <span className='profile__err'>{err}</span>
-                    <button className='profile__save-btn' onClick={setActive} type='submit' disabled={!formValid}>Сохранить</button>
+                    <button className='profile__save-btn' type='submit' disabled={!formValid}>{saveButtonText}</button>
                     </>}
                 </form>
             </section>

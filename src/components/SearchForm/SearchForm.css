@@ -4,7 +4,6 @@
     width: 100%;
     justify-content: center;
     border-bottom: 1px solid #e8e8e8;
-    margin-bottom: 10px;
     background-color: #fafafa;
 }
 
@@ -151,7 +150,6 @@
 @media screen and (max-width: 1023px) {
     .search {
         padding: 80px 30px 109px;
-        margin-bottom: 11px;
         width: calc(100% - 60px);
     }
 
@@ -171,7 +169,6 @@
 @media screen and (max-width: 767px) {
     .search {
         padding: 80px 10px 109px;
-        margin-bottom: 11px;
         width: calc(100% - 20px);
     }
 
